@@ -1,0 +1,13 @@
+matplotlib
+numpy
+abmarl
+importlib-metadata<5.0
+tensorflow
+gym<0.22
+ray[rllib]==2.0.0
+open-spiel
+seaborn
+sphinx
+sphinx-rtd-theme
+flake8
+pytest
