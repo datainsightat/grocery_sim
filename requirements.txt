@@ -2,7 +2,7 @@ matplotlib
 numpy
 abmarl
 importlib-metadata<5.0
-tensorflow
+tensorflow==2.4.0
 gym<0.22
 ray[rllib]==2.0.0
 open-spiel
@@ -11,3 +11,5 @@ sphinx
 sphinx-rtd-theme
 flake8
 pytest
+jupyter
+jupyterlab
