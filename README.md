@@ -3,6 +3,10 @@ Simulate the dynamics in a grocery store
 
 ## Setup
 
+### Source
+
+    https://abmarl.readthedocs.io/en/latest/index.html
+
 ### Setup Docker container
 
     $ docker container run -it -p 8080:80 --name grocery_sim ubuntu:20.04
