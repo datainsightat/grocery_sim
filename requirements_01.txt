@@ -1,0 +1,7 @@
+matplotlib
+numpy
+tensorflow==2.11.0
+tensorflow-gpu==2.11.0
+keras==2.11.0
+jupyter
+jupyterlab

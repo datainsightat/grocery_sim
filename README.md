@@ -6,18 +6,19 @@ Simulate the dynamics in a grocery store
 ### Source
 
     https://abmarl.readthedocs.io/en/latest/index.html
+    https://neptune.ai/blog/the-best-tools-for-reinforcement-learning-in-python
+    https://strikingloo.github.io/reinforcement-learning-beginners
+    https://pypi.org/project/pyqlearning/
+    !!! https://samyzaf.com/ML/tdf/tdf.html
 
 ### Setup Docker container
 
-    $ docker container run -it -p 8080:80 --name grocery_sim ubuntu:20.04
+    $ docker container run -it -p 8080:80 --shm-size=0.45gb --name grocery_sim ubuntu:20.04
   
     grocery_sim$ apt-get update
     grocery_sim$ apt-get upgrade
     
-    grocery_sim$ apt-get install wget git ffmpeg software-properties-common
-    grocery_sim$ add-apt-repository multiverse
-    grocery_sim$ apt-get update
-    grocery_sim$ apt install ubuntu-restricted-extras
+    grocery_sim$ apt-get install wget git ffmpeg
 
     grocery_sim$ wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
     grocery_sim$ chmod +x Miniconda3-latest-Linux-x86_64.sh
