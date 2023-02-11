@@ -40,6 +40,9 @@ function() {
     for (var y = 0; y < this.map.length; ++y) {
         for (var x = 0;x < this.map[y].length; ++x) {
             let tileCode = this.map[y][x]
+            let tileType = this.tileTypes[tileCode];
+            let tile = this.createEl(x,y,tileType);
+            this.appendChild(tile);
         }
     }
 }
@@ -53,3 +56,10 @@ function(x,y,type) {
     el.style.top = y*this.tileDim + 'px';
     return el;
 }
+
+function init() {
+    let myGmae = new Game('gmae-container-1',levels[0]);
+    myGame.populateMap();
+}
+
+init();
