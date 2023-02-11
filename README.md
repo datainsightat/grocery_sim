@@ -44,12 +44,18 @@ copy /root/.ssh/id_ed25519.pub to git repo
     grocery_sim$ pip install -r requirements.txt
     grocery_sim$ ipython kernel install --name "grocery_sim" --user
 
-### Run Demo
+### Run Demos
+
+#### grocery_sim.py
 
     grocery_sim$ abmarl train multi_corridor_example.py
     grocery_sim$ tensorboard --logdir abmarl_relts
     grocery_sim$ abmarl visualize abmarl_results/MultiCorridor_2023-02-03_12-26/ -n 5 --record
-    
+
+#### grocery_sim_20/
+
+    node server.js
+
 ### Automatic Shutdown of VM, if CPU Load is below Threshold
 
     grocery_sim$ ./shutdown_idle.sh 
