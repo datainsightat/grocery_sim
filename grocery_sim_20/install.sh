@@ -8,3 +8,4 @@ NVM_DIR=/root/.nvm
 PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
 node --version
 npm --version
+npm install express --save

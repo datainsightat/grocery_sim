@@ -54,6 +54,8 @@ copy /root/.ssh/id_ed25519.pub to git repo
 
 #### grocery_sim_20/
 
+    cd grocery_sim_20
+    ./install.sh
     node server.js
 
 ### Automatic Shutdown of VM, if CPU Load is below Threshold
