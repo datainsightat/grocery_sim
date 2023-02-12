@@ -224,8 +224,11 @@ Game.prototype.populateMap = function() {
        // call the helper function
        let tile = this.createEl(x,y,tileType);
 
+       tile.setAttribute('id',''.concat('y',y,'x',x));
+
         // TEST TEST SATURATION
         tile.classList.remove('see_0,see_25,see_50,see_75,see_100');
+        tile.className += ' see_0';
        
        // add to layer
        tiles.appendChild(tile);
@@ -280,10 +283,13 @@ Game.prototype.collide = function() {
 
 Game.prototype.perception= function() {
 
-  let tile_100 = this.map[this.player.y][this.player.x];
-  console.log([this.player.y,this.player.x]);
-  console.log(tile_100.classList);
-
+  let y1 = [this.player.y] * 1 + 1;
+  let x1 = [this.player.x] * 1 + 1;
+  let tile_100 = document.getElementById(''.concat('y',y1,'x',x1));
+  //console.log([this.player.y,this.player.x]);
+  //console.log(tile_100);
+  //console.log(tile_100.classList);
+  console.log(''.concat('y',y1,'x',x1));
 
   let tile_75 = this.map[this.player.y][this.player.x];
   let tile_50 = this.map[this.player.y][this.player.x];
