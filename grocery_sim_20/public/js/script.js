@@ -162,6 +162,11 @@ function Game(id,level) {
   // inherit the level's properties: map, player start, goal start.
   this.map = level.map;
   
+  this.perception_level = new Array(this.map.length);
+  for (var i = 0; i < this.perception_level.length; i++) {
+    this.perception_level[i] = new Array(this.map[0].length).fill(1);
+  }
+  
   // level switch
   this.theme = level.theme;
   
@@ -285,19 +290,40 @@ Game.prototype.perception= function() {
 
   let y1 = [this.player.y] * 1 + 1;
   let x1 = [this.player.x] * 1 + 1;
-  let tile_100 = document.getElementById(''.concat('y',y1,'x',x1));
+  let tile = document.getElementById(''.concat('y',y1,'x',x1));
   //console.log([this.player.y,this.player.x]);
   //console.log(tile_100);
   //console.log(tile_100.classList);
   console.log(''.concat('y',y1,'x',x1));
 
-  let tile_75 = this.map[this.player.y][this.player.x];
-  let tile_50 = this.map[this.player.y][this.player.x];
-  let tile_25 = this.map[this.player.y][this.player.x];
-  let tile_0 = this.map[this.player.y][this.player.x];
+  y0 = [this.player.y] * 1;
+  x0 = [this.player.x] * 1;
 
-  tile_100.classList.remove('see_0,see_25,see_50,see_75,see_100');
-  tile_100.className += ' see_100';
+  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 19)) {
+    for (let j = 1; j <= 5; j++) {
+      dy = Math.round(Math.sin(i) * j);
+      dx = Math.round(Math.cos(i) * j);
+      y = y0 + dy;
+      x = x0 + dx;
+      //console.log(this.perception_level[this.player.y + dy][this.player.x + dx]);
+      if(this.perception_level[y][x] == null) {
+        this.perception_level[y][x] = 0;
+      }
+  
+      if (this.perception_level[y][x] < j) {
+        this.perception_level[y][x] = 6-j;
+      }
+  
+      let tile = document.getElementById(''.concat('y',y,'x',x));
+      tile.classList.remove('see_0,see_1,see_2,see_3,see_4,see_5');
+      tile.className += ' see_'.concat(this.perception_level[y][x]);
+
+      if (this.map[y][x] == 1) {
+        break;
+      }
+    }
+  }
+
 }
 
 /*
