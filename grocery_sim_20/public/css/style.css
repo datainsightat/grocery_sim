@@ -32,6 +32,23 @@ div.layer div {
 .default .wall {
   background-color: skyblue;
 }
+
+.see_0 {
+  filter: saturate(0%);
+}
+.see_25 {
+  filter: saturate(25%);
+}
+.see_50 {
+  filter: saturate(50%);
+}
+.see_75 {
+  filter: saturate(75%);
+}
+.see_100 {
+  filter: saturate(100%);
+}
+
 .player {
   background-color: #90ee90;
   border: 1px solid green;
