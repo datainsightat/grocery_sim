@@ -1,103 +1,108 @@
-let levels = [];
+let app = {};
 
-levels[0] = {
-  map:[
-     [1,1,0,0,1],
-     [1,0,0,0,0],
-     [0,0,1,1,0],
-     [0,0,0,1,0],
-     [0,1,0,1,0]
-  ],
-  player: {
-     x:0,
-     y:4
-  },
-  goal:{
-    x:4,
-    y:1
-  },
-  theme:'default'
-};
 
-levels[1] = {
+(function(context) {
+
+  /*
+   *  Build an array of levels.
+   *  This will scale better if it is stored in a separate JSON File.
+   */
+  let levels = [];
+  levels[0] = {
+    map:[
+       [1,1,0,0,1],
+       [1,0,0,0,0],
+       [0,0,1,1,0],
+       [0,0,0,1,0],
+       [0,1,0,1,0]
+    ],
   
-  map:[
-     [1,0,1,1,1,1],
-     [0,0,0,0,0,0],
-     [0,1,1,1,0,0],
-     [0,0,0,1,1,0],
-     [0,1,0,1,0,0]
-  ],
+    player:{
+        x:0,
+        y:4
+    },
+    goal:{
+        x:4,
+        y:1
+    },
+    theme:'default',
+  };
+  // second level
+  levels[1] = {
+    map:[
+       [1,0,1,1,1,1],
+       [0,0,0,0,0,0],
+       [0,1,1,1,0,0],
+       [0,0,0,1,1,0],
+       [0,1,0,1,0,0]
+    ],
+    theme:'grassland',
+    player:{
+        x:2,
+        y:4
+    },
+    goal:{
+        x:4,
+        y:4
+    }
+   };
+  // third level
+  levels[2] = {
+    map:[
+       [1,0,1,0,0,1,0],
+       [0,0,0,0,0,1,0],
+       [1,0,1,1,0,0,0],
+       [1,0,0,1,0,1,0],
+       [1,1,0,0,1,0,0]
+    ],
+    theme:'dungeon',
+    player:{
+        x:2,
+        y:4
+    },
+    goal:{
+        x:6,
+        y:4
+    }
+   };
+ 
 
-  player:{
-      x:2,
-      y:4
-  },
-  goal:{
-      x:4,
-      y:4
-  },
-  theme:'grassland'
-};
-
-
-levels[2] = {
-    
-  map:[
-     [1,0,1,0,0,1,0],
-     [0,0,0,0,0,1,0],
-     [1,0,1,1,0,0,0],
-     [1,0,0,1,0,1,0],
-     [1,1,0,0,1,0,0]
-  ],
-  player:{
-      x:2,
-      y:4
-  },
-  goal:{
-      x:6,
-      y:4
-  },
-   theme:'dungeon'
-};
-
-function Game(id, level) {
+/*
+ *  The game object constructor.
+ *  @param {String} id - the id of the game container DOM element.
+ *  @param {Object} level - the starting level of the game.
+ */
+function Game(id,level) {
   
   this.el = document.getElementById(id);
-
+  
+  // level addition
   this.level_idx = 0;
   
+  // establish the basic properties common to all this objects.
   this.tileTypes = ['floor','wall'];
-  
   this.tileDim = 32;
-  
   // inherit the level's properties: map, player start, goal start.
   this.map = level.map;
-  this.theme = level.theme
+  
+  // level switch
+  this.theme = level.theme;
+  
+  // make a copy of the level's player.
   this.player = {...level.player};
+  
+  // create a property for the DOM element, to be set later.
+  this.player.el = null;
+  
+  // make a copy of the goal.
   this.goal = {...level.goal};
 }
 
-Game.prototype.populateMap = function() {
-  
-  this.el.className = 'game-container ' + this.theme;
-  
-  let tiles = document.getElementById('tiles');
-  
-  for (var y = 0; y < this.map.length; ++y) {
-    
-    for (var x = 0; x < this.map[y].length; ++x) {
-              
-           let tileCode = this.map[y][x];
-       
-           let tileType = this.tileTypes[tileCode];
-       
-           let tile = this.createEl(x, y, tileType);
-       
-           tiles.appendChild(tile); // add to tile layer
-     }
-  }
-}
+/*
+ * Create a tile or sprite <div> element.
+ * @param {Number} x - the horizontal coordinate the 2D array.
+ * @param {Number} y - the vertical coordinate in the 2D array.
+ */
 Game.prototype.createEl = function(x,y,type) {
    // create one tile.
   let el = document.createElement('div');
@@ -116,6 +121,42 @@ Game.prototype.createEl = function(x,y,type) {
       
   return el;
 }
+
+/*
+ * Applies the level theme as a class to the game element. 
+ * Populates the map by adding tiles and sprites to their respective layers.
+ */
+Game.prototype.populateMap = function() {
+  
+  // add theme call
+  this.el.className = 'game-container ' + this.theme;
+
+  // make a reference to the tiles layer in the DOM.
+  let tiles = this.el.querySelector('#tiles');
+  
+  // set up our loop to populate the grid.
+  for (var y = 0; y < this.map.length; ++y) {
+    for (var x = 0; x < this.map[y].length; ++x) {
+      
+       let tileCode = this.map[y][x];
+
+        // determine tile type using code
+        // index into the tileTypes array using the code.
+       let tileType = this.tileTypes[tileCode];
+      
+       // call the helper function
+       let tile = this.createEl(x,y,tileType);
+       
+       // add to layer
+       tiles.appendChild(tile);
+    }
+  }
+}
+
+/*
+ * Place the player or goal sprite.
+ * @param {String} type - either 'player' or 'goal', used by createEl and becomes DOM ID
+ */
 Game.prototype.placeSprite = function(type) {
   
   // syntactic sugar
@@ -140,6 +181,278 @@ Game.prototype.placeSprite = function(type) {
   
   return sprite;
 }
+
+/*
+ * Triggers a collide animation on the player sprite.
+ */
+Game.prototype.collide = function() {
+  this.player.el.className += ' collide';
+  
+  let obj = this;
+  
+  window.setTimeout(function() {
+  obj.player.el.className = 'player';
+  },200);
+  
+  return 0;
+  
+};
+/*
+ * Moves the player sprite left.
+ */
+Game.prototype.moveLeft = function() {
+    // if at the boundary, return
+    if (this.player.x == 0) {
+        this.collide();
+        return;
+    }
+    // itentify next tile
+    let nextTile = this.map[this.player.y][this.player.x-1];
+  
+    // if next tile is a wall, add collide effect and return
+    if (nextTile ==1) {
+        this.collide();
+        return;
+    }
+    // change coordinates of player object
+    this.player.x -=1;
+    // update location of DOM element
+    this.updateHoriz();
+};
+/*
+ * Moves the player sprite up.
+ */
+Game.prototype.moveUp = function() {
+  if (this.player.y == 0) {
+        // at end: these could be combined
+        this.collide();
+        return;
+  }
+      
+  let nextTile = this.map[this.player.y-1][this.player.x];
+  if (nextTile ==1) {
+        this.collide();
+        return;
+  }
+  this.player.y -=1;
+  this.updateVert();
+  
+};
+/*
+ * Moves the player sprite right.
+ */
+Game.prototype.moveRight = function()  {
+   if (this.player.x == this.map[this.player.y].length-1) {
+        this.collide();
+        return;
+   }
+   nextTile = this.map[this.player.y][this.player.x+1];
+        
+   if (nextTile ==1) {
+        this.collide()
+        return;
+   }
+   this.player.x += 1;
+   
+   this.updateHoriz();
+};
+/*
+ * Moves player sprite down.
+ */
+Game.prototype.moveDown = function()  {
+  if (this.player.y == this.map.length-1) {
+        this.collide();
+        return;
+   }
+   // find the next tile in the 2D array.
+        
+   let nextTile = this.map[this.player.y+1][this.player.x];
+    if (nextTile ==1) {
+        this.collide()
+        return;
+   }
+   this.player.y += 1;
+   this.updateVert();
+  
+};
+/* 
+ *  Updates vertical position of player sprite based on object's y coordinates.
+ */
+Game.prototype.updateVert = function() { 
+     this.player.el.style.top = this.player.y * this.tileDim+ 'px';
+};
+/* 
+ *  Updates horizontal position of player sprite based on object's x coordinates.
+ */  
+Game.prototype.updateHoriz = function() {
+     this.player.el.style.left = this.player.x * this.tileDim + 'px'; 
+};
+/*
+ * Moves player based on keyboard cursor presses.
+ */
+Game.prototype.movePlayer = function(event) {
+    event.preventDefault();
+    
+    if (event.keyCode < 37 || event.keyCode > 40) {
+      return;
+    }
+
+    switch (event.keyCode) { 
+      case 37:
+      this.moveLeft();
+      break;
+      
+      case 38:       
+      this.moveUp();
+      break;
+
+      case 39:
+      this.moveRight();
+      break;
+        
+      case 40:
+      this.moveDown();
+      break;
+    }
+ }
+/*
+ * Check on whether goal has been reached.
+ */
+Game.prototype.checkGoal = function() {
+     let body = document.querySelector('body');
+  
+     if (this.player.y == this.goal.y &&
+       this.player.x == this.goal.x) {
+       
+       body.className = 'success';
+     }
+     else {
+       body.className = '';
+     }
+}
+/*
+ * Changes the level of the game object.
+ */
+Game.prototype.changeLevel = function() {
+    
+    // update the level index.
+    this.level_idx ++;
+
+    // if higher than max index, set back to zero.
+       if (this.level_idx > levels.length -1) {
+         this.level_idx = 0;
+    }
+    
+    // get the level at this index.
+    let level = levels[this.level_idx];
+    
+    // sync the map with the level map.
+    this.map = level.map;
+    // sync the theme with the level theme.
+    this.theme = level.theme;
+
+    // make a copy of the level's player object, since x and y change during the game.
+    this.player = {...level.player};
+
+    // make a copy of the level's goal object, since x and y change between levels.
+    this.goal = {...level.goal};
+ }
+
+ /*
+  * If goal has been reached, 
+  */
+ Game.prototype.addMazeListener = function() {
+
+   // grab the map
+
+   let map = this.el.querySelector('.game-map');
+
+   // grab reference to game object since we are going into a function 
+   // and "this" will no longer refer to the game object
+
+   let obj = this;
+
+   // if game board is clicked or tapped, see if we should change levels
+   map.addEventListener('mousedown',function(e) {
+     
+       // if not at the goal, then get outta here
+       if (obj.player.y != obj.goal.y ||
+       obj.player.x != obj.goal.x) {
+         return;
+       }
+       // change level of game object by changing it's properties
+       obj.changeLevel();
+       
+       // get the two layers
+       let layers = obj.el.querySelectorAll('.layer');
+      
+       // clear tiles and sprites from layers
+       for (layer of layers) {
+           layer.innerHTML = '';
+       }
+       
+       // place the new level.
+       obj.placeLevel();
+     
+       // check the goal to reset the message.
+       obj.checkGoal();
+      
+   });
+ };
+
+/*
+ *  Responds to a keydown event by moving the player and checking the goal.
+ */
+Game.prototype.keyboardListener = function() {
+  document.addEventListener('keydown', event => {
+      this.movePlayer(event);
+      this.checkGoal();
+  });
+  
+ }
+ /*
+  * Adds mouse down listeners to buttons
+  */
+ Game.prototype.buttonListeners = function() {
+   let up = document.getElementById('up');
+   let left = document.getElementById('left');
+   let down = document.getElementById('down')
+   let right = document.getElementById('right');
+   
+   // the sprite is out of date
+   let obj = this;
+   up.addEventListener('mousedown',function() {
+  
+     obj.moveUp();
+     obj.checkGoal();   
+   });
+    down.addEventListener('mousedown',function() {
+     obj.moveDown();
+     obj.checkGoal();   
+   });
+    left.addEventListener('mousedown',function() {
+     obj.moveLeft();
+     obj.checkGoal();   
+   });
+    right.addEventListener('mousedown',function() {
+     obj.moveRight();
+     obj.checkGoal();   
+   });
+   
+ }
+  
+/*
+ * Sets the message of the text element.
+ * @param {String} msg - The message to be printed.
+ */
+ Game.prototype.setMessage = function(msg) { 
+   let text_el = this.el.querySelector('.text');
+   text_el.textContent = msg;
+ };
+
+ /*
+  * Sizes up the map based on array dimensions.
+  */
  Game.prototype.sizeUp = function() {
   
   // inner container so that text can be below it
@@ -149,213 +462,60 @@ Game.prototype.placeSprite = function(type) {
   map.style.height = this.map.length * this.tileDim + 'px';
    
   map.style.width = this.map[0].length * this.tileDim + 'px';
- }
-Game.prototype.movePlayer = function(event) {
-  
-  event.preventDefault();
-  
-  if (event.keyCode < 37 || event.keyCode > 40) {
-      return;
-  }
-   switch (event.keyCode) {
    
-        case 37:
-        this.moveLeft();
-        break;
-        
-        case 38:
-        this.moveUp();
-        break;
-        
-        case 39:
-        this.moveRight();
-        break;
-       
-        case 40:
-        this.moveDown();
-        break;
-    }
-}
-Game.prototype.checkGoal = function(instrux_msg, goal_msg) {
-  
-    let body = document.querySelector('body');
-  
-    if (this.player.y == this.goal.y && 
-        this.player.x == this.goal.x) {
-        body.className = 'success';
-     }
-     else {
-        body.className = '';
-     }
-  
-}
-Game.prototype.keyboardListener = function() {
-  
-  document.addEventListener('keydown', event => {
-      
-      this.movePlayer(event);
-    
-      this.checkGoal();
-  });
-}
-
-/* movement helpers */
-
-Game.prototype.moveLeft = function(sprite) {   
-  
-   if (this.player.x == 0) {
-       return;
-   }
-  
-   let nextTile = this.map[this.player.y][this.player.x - 1];
-   if (nextTile == 1) {
-       return;
-   }
-    
-   this.player.x -=1;
-   
-   this.updateHoriz(sprite);
-}
-Game.prototype.moveUp = function() {    
-  
-   if (this.player.y == 0) {
-        return;
-   }
-  
-   let nextTile = this.map[this.player.y-1][this.player.x];
-   if (nextTile ==1) {
-        return;
-   }
-    
-   this.player.y -=1;
-   
-   this.updateVert();
-}
-Game.prototype.moveRight = function(sprite) {   
-  
-   if (this.player.x == this.map[this.player.y].length - 1) {
-        return;
-   }
-   let nextTile = this.map[this.player.y][this.player.x + 1];
-        
-   if (nextTile == 1) {
-        return;
-   }
-    
-   this.player.x +=1;
-   
-   this.updateHoriz(sprite);
-}
-Game.prototype.moveDown = function() {   
-  
-   if (this.player.y == this.map.length - 1) {
-        return;
-   }
-   let nextTile = this.map[this.player.y+1][this.player.x];
-  
-   if (nextTile == 1) {
-        return;
-   }
-    
-   this.player.y +=1;
-   
-   this.updateVert();
-}
-
-/* dom update helpers */
-
-Game.prototype.updateHoriz = function(sprite) {      
-   this.player.el.style.left = this.player.x * this.tileDim+ 'px';    
 };
+  
 
-Game.prototype.updateVert = function() {
-   this.player.el.style.top = this.player.y * this.tileDim+ 'px'; };
-
- Game.prototype.buttonListeners = function(instrux_msg,goal_msg) {
-   let up = document.getElementById('up');
-   let left = document.getElementById('left');
-   let down = document.getElementById('down')
-   let right = document.getElementById('right');
+/*
+ * Populates the map.
+ * Sizes up the map based on array dimensions.
+ * Gives the goal and player some references.
+ */ 
+ Game.prototype.placeLevel = function() {
+    this.populateMap();
+    
+    this.sizeUp();
    
-   let obj = this;
-  
-   up.addEventListener('mousedown',function() {
-     obj.moveUp();
-     obj.checkGoal(instrux_msg,goal_msg);   
-   });
-  
-   down.addEventListener('mousedown',function() {
-     obj.moveDown();
-     obj.checkGoal(instrux_msg,goal_msg);   
-   });
-  
-   left.addEventListener('mousedown',function() {
-     obj.moveLeft();
-     obj.checkGoal(instrux_msg,goal_msg);   
-   });
-  
-    right.addEventListener('mousedown',function() {
-     obj.moveRight();
-     obj.checkGoal(instrux_msg,goal_msg);   
-   });
+    this.placeSprite('goal');
+    
+    // we want the DOM element that gets returned...
+    let playerSprite = this.placeSprite('player');
+   
+    // ..so we can store it in the playerSprite element.
+    this.player.el = playerSprite;
+   
  }
-
-Game.prototype.addMazeListener = function() {
-  let map = this.el.querySelector('.game-map');
-  let obj = this;
-  map.addEventListener('mousedown',function(e) {
-    if (obj.player.y != obj.goal.y || obj.player.x != obj.goal.x) {
-      return;
-    }
-
-    obj.changeLevel();
-
-    let layers = obj.el.querySelectorAll('.layer');
-
-    for (layer of layers) {
-      layer.innerHTML = '';
-    }
-
-    obj.placeLevel();
-    obj.checkGoal();
-  });
-}
-
-Game.prototype.changeLevel = function() {
-  this.level_idx++;
-  if (this.leve_idx > levels.length - 1) {
-    this.leel_idx = 0;
+ /*
+  *  Add keyboard, button, and maze tap listeners
+  */
+ Game.prototype.addListeners = function() {
+    
+    this.keyboardListener();
+    
+    this.buttonListeners();
+    
+    // changing levels
+    this.addMazeListener();
   }
-  let level = levels[this.level_idx];
-  this.map = level.map;
-  this.theme = level.theme;
-  this.player = {...level.player};
-  this.goal = {...level.goal};
-}
-
-Game.prototype.placeLevel = function() {
-  this.populateMap();
-  this.sizeUp();
-  this.placeSprite('goal');
-  let playerSprite = this.placeSprite('player');
-  this.player.el = playerSprite;
-}
-
-Game.prototype.addListeners = function() {
-  this.keyboardListener();
-  this.buttonListeners();
-  this.addMazeListener();
-}
-
-/* initialization */
-
-function init() {
-
-   let myGame = new Game('game-container-1',levels[0]);
   
-   myGame.placeLevel();
-  
-   myGame.addListeners();
-}
+  /*
+   *  Initialization function called once
+   */
+  context.init = function () {
+    
+    let myGame = new Game('game-container-1',levels[0]);
+    
+    // encapsulate for multi-level
+    myGame.placeLevel();
+    
+    // add listeners
+    myGame.addListeners();
+    
+  }
+})(app);
 
-init();
+/*
+ * Tell app to activate the init() function.
+ */
+
+app.init();
