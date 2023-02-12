@@ -1,19 +1,14 @@
-var http = require('http');
-var fs = require('fs');
 
+const path = require('path');
 const express = require('express');
 const app = express();
 
-const path = __dirname + '/public/';
-const PORT=80; 
+app.use(express.static(__dirname + '/public/'));
 
-fs.readFile(path + 'index.html', function (err, html) {
-
-    if (err) throw err;    
-
-    http.createServer(function(request, response) {  
-        response.writeHeader(200, {"Content-Type": "text/html"});  
-        response.write(html);  
-        response.end();  
-    }).listen(PORT);
+app.get('/', function(req, res) {
+    res.sendFile(path.join(__dirname + '/index.html'));
 });
+
+app.listen(80);
+
+console.log(__dirname,'Now the server is running in url: http://127.0.0.1:80');
