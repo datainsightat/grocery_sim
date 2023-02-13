@@ -24,31 +24,22 @@ div.layer div {
   position: absolute;
 }
 #tiles div {
-  border: 1px solid grey;
+  border: 0px solid grey;
 }
 .default .floor {
-  background-color: lightgoldenrodyellow
+  background-color: blue
 }
 .default .wall {
-  background-color: lightseagreen;
+  background-color: red;
 }
 
 .see_0 {
   filter: saturate(0%);
 }
 .see_1 {
-  filter: saturate(10%);
-}
-.see_2 {
-  filter: saturate(25%);
-}
-.see_3 {
   filter: saturate(50%);
 }
-.see_4 {
-  filter: saturate(75%);
-}
-.see_5 {
+.see_2 {
   filter: saturate(100%);
 }
 
@@ -63,7 +54,7 @@ div.layer div {
 .player {
   background-color: #90ee90;
   border: 1px solid green;
-  transition: left 0.2s linear, top 0.2s linear;
+  /*transition: left 0.2s linear, top 0.2s linear;*/
 }
 #success-msg {
   opacity: 0;
