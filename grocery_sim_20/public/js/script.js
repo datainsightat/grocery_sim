@@ -348,18 +348,43 @@ Game.prototype.perception= function() {
   aisle_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
   aisle_ctx.fill();
 
+  // create Navigation Canvas;
+
+  const aisle_unknown_canvas = document.querySelector('#aisle_unknown_canvas');
+
+  if (!aisle_unknown_canvas.getContext) {
+    return;
+  }
+
+  aisle_unknown_ctx = aisle_unknown_canvas.getContext('2d');
+
+  // set line stroke and line width
+  aisle_unknown_ctx.strokeStyle = 'black';
+  aisle_unknown_ctx.lineWidth = 1;
+
+  aisle_unknown_ctx.clearRect(0,0,100,100);
+  aisle_unknown_ctx.beginPath();
+  aisle_unknown_ctx.arc(50, 50, 50, 0, 2 * Math.PI);
+  aisle_unknown_ctx.stroke();
+  aisle_unknown_ctx.beginPath();
+  aisle_unknown_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
+  aisle_unknown_ctx.fill();
+
   // set player center
 
   let y0 = [this.player.y] * 1;
   let x0 = [this.player.x] * 1;
 
-  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 4)) {
+  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 128)) {
 
     let knowledge_score = 0;
     let unknown_aisle_score  = 0;
+    let aisle_score  = 0;
     let view_blocked = false;
 
-    for (let j = 1; j <= 15; j++) {
+    ray_length = 25;
+
+    for (let j = 1; j <= ray_length; j++) {
 
       let dy = Math.round(Math.sin(i) * j);
       let dx = Math.round(Math.cos(i) * j);
@@ -369,6 +394,7 @@ Game.prototype.perception= function() {
       // if coordinates are out of Matrix, break
       //console.log(y,this.player.knowledge_level.length,x,this.player.knowledge_level[0].length);
       if (y < 0 | y > (this.player.knowledge_level.length-1) | x < 0 | x > (this.player.knowledge_level[0].length-1)) {
+        knowledge_score += 2*((ray_length + 1)-j);
         break;
       }
   
@@ -384,12 +410,23 @@ Game.prototype.perception= function() {
 
       // if there is an aisle and the player has little knowledge about it and the view
       // is not blocked, increase score
+      if (this.map[y][x] == 0 & view_blocked == false) {
+        aisle_score += 1;
+      }
+
+      // if there is an aisle and the player has little knowledge about it and the view
+      // is not blocked, increase score
       if (this.map[y][x] == 0 & this.player.knowledge_level[y][x] < 2 & view_blocked == false) {
         unknown_aisle_score += 1;
       }
 
       // sum up everything the player knows about the direction
-      knowledge_score += this.player.knowledge_level[y][x]
+      // if view is blocked, the player has all information about the wall objects
+      if (view_blocked == true & this.map[y][x] == 1) {
+        knowledge_score += 2;
+      } else {
+        knowledge_score += this.player.knowledge_level[y][x]
+      }
   
       let tile = document.getElementById(''.concat('y',y,'x',x));
       //console.log(tile.classList);
@@ -407,16 +444,23 @@ Game.prototype.perception= function() {
 
     let nav_x0 = 50;
     let nav_y0 = 50;
-    let know_nav_dy = Math.round(Math.sin(i) * knowledge_score);
-    let know_nav_dx = Math.round(Math.cos(i) * knowledge_score);
-    let aisle_nav_dy = Math.round(Math.sin(i) * unknown_aisle_score * 3);
-    let aisle_nav_dx = Math.round(Math.cos(i) * unknown_aisle_score * 3);
+    let know_nav_dy = Math.round(Math.sin(i) * knowledge_score / (ray_length+1) * 50 / 2);
+    let know_nav_dx = Math.round(Math.cos(i) * knowledge_score / (ray_length+1) * 50 / 2);
+    let aisle_nav_dy = Math.round(Math.sin(i) * (aisle_score + 1) / ray_length * 50);
+    let aisle_nav_dx = Math.round(Math.cos(i) * (aisle_score + 1) / ray_length * 50);
+    let aisle_unknown_nav_dy = Math.round(Math.sin(i) * (unknown_aisle_score + 1) / ray_length * 50);
+    let aisle_unknown_nav_dx = Math.round(Math.cos(i) * (unknown_aisle_score + 1) / ray_length * 50);
 
     // draw a red line
     knowledge_ctx.beginPath();
     knowledge_ctx.moveTo(nav_x0, nav_y0);
     knowledge_ctx.lineTo(nav_x0 + know_nav_dx, nav_y0 + know_nav_dy);
     knowledge_ctx.stroke();
+
+    aisle_unknown_ctx.beginPath();
+    aisle_unknown_ctx.moveTo(nav_x0, nav_y0);
+    aisle_unknown_ctx.lineTo(nav_x0 + aisle_unknown_nav_dx, nav_y0 + aisle_unknown_nav_dy);
+    aisle_unknown_ctx.stroke();
 
     aisle_ctx.beginPath();
     aisle_ctx.moveTo(nav_x0, nav_y0);
