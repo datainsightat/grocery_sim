@@ -289,37 +289,23 @@ Game.prototype.collide = function() {
 
 Game.prototype.perception= function() {
 
-  let y1 = [this.player.y] * 1 + 1;
-  let x1 = [this.player.x] * 1 + 1;
-  let tile = document.getElementById(''.concat('y',y1,'x',x1));
-  //console.log([this.player.y,this.player.x]);
-  //console.log(tile_100);
-  //console.log(tile_100.classList);
-  //console.log(''.concat('y',y1,'x',x1));
+  let y0 = [this.player.y] * 1;
+  let x0 = [this.player.x] * 1;
 
-  y0 = [this.player.y] * 1;
-  x0 = [this.player.x] * 1;
+  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 72)) {
 
-  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 36)) {
+    for (let j = 1; j <= 15; j++) {
 
-    for (let j = 1; j <= 10; j++) {
-
-      dy = Math.round(Math.sin(i) * j);
-      dx = Math.round(Math.cos(i) * j);
-      y = y0 + dy;
-      x = x0 + dx;
+      let dy = Math.round(Math.sin(i) * j);
+      let dx = Math.round(Math.cos(i) * j);
+      let y = y0 + dy;
+      let x = x0 + dx;
 
       // if coordinates are out of Matrix, break
       //console.log(y,this.perception_level.length,x,this.perception_level[0].length);
       if (y < 0 | y > (this.perception_level.length-1) | x < 0 | x > (this.perception_level[0].length-1)) {
         break;
       }
-
-      //console.log(this.perception_level[y][x]);
-
-      // if(this.perception_level[y][x] == null) {
-      //   this.perception_level[y][x] = 0;
-      // }
   
       if (j > 2) {
         percive = 1
@@ -460,7 +446,7 @@ Game.prototype.movePlayer = function(event) {
       this.moveLeft();
       break;
       
-      case 38:       
+      case 38:
       this.moveUp();
       break;
 
