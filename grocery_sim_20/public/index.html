@@ -25,14 +25,29 @@
        <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
      </div>
 
-    <!-- controls added here -->
-    <div id="controls">
-      <button id="up"></button>
-      <div id="horiz">
-        <button id="left"></button>
-        <button id="right"></button>
+    <div>
+      <!-- controls added here -->
+      <div id="controls">
+        <button id="up"></button>
+        <div id="horiz">
+          <button id="left"></button>
+          <button id="right"></button>
+        </div>
+        <button id="down"></button>
       </div>
-      <button id="down"></button>
+
+      <!-- Navigation -->
+
+      <div id="Navigation" class="header_nav">
+        <div class="radar">
+          <div class="header_nav">Knowledge</div>
+          <canvas id="knowledge_canvas" height="100" width="100"></canvas>
+        </div>
+        <div class="radar">
+          <div class="header_nav">Unknown Aisles</div>
+          <canvas id="aisle_canvas" height="100" width="100"></canvas>
+        </div>
+      </div>
     </div>
 
    </div>

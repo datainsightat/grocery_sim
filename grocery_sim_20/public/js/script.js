@@ -10,22 +10,22 @@ let app = {};
 
   /// START TEST READ FROM FILE
 
-    async function getUsers() {
-      let url = 'data/store.json';
-      try {
-          let res = await fetch(url);
-          return await res.json();
-      } catch (error) {
-          console.log(error);
-      }
-    }
+    // async function getUsers() {
+    //   let url = 'data/store.json';
+    //   try {
+    //       let res = await fetch(url);
+    //       return await res.json();
+    //   } catch (error) {
+    //       console.log(error);
+    //   }
+    // }
 
-    //let store_map = fetch('data/store.json').json()
-      //.then((response) => response.json())
-      //.then((json) => console.log(json));
-      //.then((json) => console.log(json))
+    // //let store_map = fetch('data/store.json').json()
+    //   //.then((response) => response.json())
+    //   //.then((json) => console.log(json));
+    //   //.then((json) => console.log(json))
 
-    let store_map = getUsers();
+    // let store_map = getUsers();
 
   /// END TEST READ FROM FILE
 
@@ -162,17 +162,17 @@ function Game(id,level) {
   // inherit the level's properties: map, player start, goal start.
   this.map = level.map;
   
-  this.perception_level = new Array(this.map.length);
-  for (var i = 0; i < this.perception_level.length; i++) {
-    this.perception_level[i] = new Array(this.map[0].length).fill(0);
-  }
-  //console.log(this.perception_level);
-  
   // level switch
   this.theme = level.theme;
   
   // make a copy of the level's player.
   this.player = {...level.player};
+
+  // set players knowledge level
+  this.player.knowledge_level = new Array(this.map.length);
+  for (var i = 0; i < this.player.knowledge_level.length; i++) {
+    this.player.knowledge_level[i] = new Array(this.map[0].length).fill(0);
+  }
   
   // create a property for the DOM element, to be set later.
   this.player.el = null;
@@ -201,7 +201,7 @@ Game.prototype.createEl = function(x,y,type) {
   
   // set top position based on y coordinate.
   el.style.top = y*this.tileDim + 'px';
-      
+
   return el;
 }
 
@@ -257,6 +257,16 @@ Game.prototype.placeSprite = function(type) {
   let sprite  = this.createEl(x,y,type);
   
   sprite.id = type;
+
+  //console.log(type);
+  // set strategy for player element
+  if (type == 'player') {
+
+    sprite.classList.remove(['idle']);
+    sprite.className += ' idle';
+    sprite.innerHTML += 'i';
+
+  }
   
   // set the border radius of the sprite.
   sprite.style.borderRadius = this.tileDim + 'px';
@@ -280,19 +290,74 @@ Game.prototype.collide = function() {
   let obj = this;
   
   window.setTimeout(function() {
-  obj.player.el.className = 'player';
+  obj.player.el.classList.remove(['collide']);
+  //obj.player.el.className = 'player';
   },200);
   
   return 0;
   
 };
 
+/*
+Roate a ray from the players point of view and collect information about the map.
+Choose strategy based on information.
+*/
 Game.prototype.perception= function() {
+
+  // create Navigation Canvas;
+
+  const knowledge_canvas = document.querySelector('#knowledge_canvas');
+
+  if (!knowledge_canvas.getContext) {
+    return;
+  }
+
+  knowledge_ctx = knowledge_canvas.getContext('2d');
+
+  // set line stroke and line width
+  knowledge_ctx.strokeStyle = 'black';
+  knowledge_ctx.lineWidth = 1;
+
+  knowledge_ctx.clearRect(0,0,100,100);
+  knowledge_ctx.beginPath();
+  knowledge_ctx.arc(50, 50, 50, 0, 2 * Math.PI);
+  knowledge_ctx.stroke();
+  knowledge_ctx.beginPath();
+  knowledge_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
+  knowledge_ctx.fill();
+
+  // create Navigation Canvas;
+
+  const aisle_canvas = document.querySelector('#aisle_canvas');
+
+  if (!aisle_canvas.getContext) {
+    return;
+  }
+
+  aisle_ctx = aisle_canvas.getContext('2d');
+
+  // set line stroke and line width
+  aisle_ctx.strokeStyle = 'black';
+  aisle_ctx.lineWidth = 1;
+
+  aisle_ctx.clearRect(0,0,100,100);
+  aisle_ctx.beginPath();
+  aisle_ctx.arc(50, 50, 50, 0, 2 * Math.PI);
+  aisle_ctx.stroke();
+  aisle_ctx.beginPath();
+  aisle_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
+  aisle_ctx.fill();
+
+  // set player center
 
   let y0 = [this.player.y] * 1;
   let x0 = [this.player.x] * 1;
 
-  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 72)) {
+  for (let i = 0; i <= 2 * Math.PI; i += (2 * Math.PI / 4)) {
+
+    let knowledge_score = 0;
+    let unknown_aisle_score  = 0;
+    let view_blocked = false;
 
     for (let j = 1; j <= 15; j++) {
 
@@ -302,8 +367,8 @@ Game.prototype.perception= function() {
       let x = x0 + dx;
 
       // if coordinates are out of Matrix, break
-      //console.log(y,this.perception_level.length,x,this.perception_level[0].length);
-      if (y < 0 | y > (this.perception_level.length-1) | x < 0 | x > (this.perception_level[0].length-1)) {
+      //console.log(y,this.player.knowledge_level.length,x,this.player.knowledge_level[0].length);
+      if (y < 0 | y > (this.player.knowledge_level.length-1) | x < 0 | x > (this.player.knowledge_level[0].length-1)) {
         break;
       }
   
@@ -313,21 +378,52 @@ Game.prototype.perception= function() {
         percive = 2
       }
 
-      if (this.perception_level[y][x] < percive) {
-        this.perception_level[y][x] = percive;
+      if (this.player.knowledge_level[y][x] < percive & view_blocked == false) {
+        this.player.knowledge_level[y][x] = percive;
       }
+
+      // if there is an aisle and the player has little knowledge about it and the view
+      // is not blocked, increase score
+      if (this.map[y][x] == 0 & this.player.knowledge_level[y][x] < 2 & view_blocked == false) {
+        unknown_aisle_score += 1;
+      }
+
+      // sum up everything the player knows about the direction
+      knowledge_score += this.player.knowledge_level[y][x]
   
       let tile = document.getElementById(''.concat('y',y,'x',x));
       //console.log(tile.classList);
       tile.classList.remove('see_0','see_1','see_2');
-      tile.className += ' see_'.concat(this.perception_level[y][x]);
+      tile.className += ' see_'.concat(this.player.knowledge_level[y][x]);
 
       // If shelf hight > 1 then stop ray
       if (this.map[y][x] > 0) {
-        break;
+        view_blocked = true;
       }
 
     }
+
+    // TEST LINE
+
+    let nav_x0 = 50;
+    let nav_y0 = 50;
+    let know_nav_dy = Math.round(Math.sin(i) * knowledge_score);
+    let know_nav_dx = Math.round(Math.cos(i) * knowledge_score);
+    let aisle_nav_dy = Math.round(Math.sin(i) * unknown_aisle_score * 3);
+    let aisle_nav_dx = Math.round(Math.cos(i) * unknown_aisle_score * 3);
+
+    // draw a red line
+    knowledge_ctx.beginPath();
+    knowledge_ctx.moveTo(nav_x0, nav_y0);
+    knowledge_ctx.lineTo(nav_x0 + know_nav_dx, nav_y0 + know_nav_dy);
+    knowledge_ctx.stroke();
+
+    aisle_ctx.beginPath();
+    aisle_ctx.moveTo(nav_x0, nav_y0);
+    aisle_ctx.lineTo(nav_x0 + aisle_nav_dx, nav_y0 + aisle_nav_dy);
+    aisle_ctx.stroke();
+
+    // END TEST LINE
 
   }
 
@@ -608,7 +704,6 @@ Game.prototype.keyboardListener = function() {
   map.style.width = this.map[0].length * this.tileDim + 'px';
    
 };
-  
 
 /*
  * Populates the map.
@@ -629,6 +724,7 @@ Game.prototype.keyboardListener = function() {
     this.player.el = playerSprite;
    
  }
+
  /*
   *  Add keyboard, button, and maze tap listeners
   */
@@ -654,7 +750,7 @@ Game.prototype.keyboardListener = function() {
     
     // add listeners
     myGame.addListeners();
-    
+
   }
 })(app);
 
