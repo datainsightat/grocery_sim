@@ -93,6 +93,29 @@ let app = {};
       [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
       [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1], 
     ],
+
+    shelfs:{
+      x6y48: {shelf:'s0001',group:'red',item:'X1'},
+      x7y48: {shelf:'s0002',group:'red',item:'X2'},
+      x8y48: {shelf:'s0003',group:'red',item:'X3'},
+      x9y48: {shelf:'s0004',group:'red',item:'X4'},
+      x10y48: {shelf:'s0005',group:'red',item:'X5'},
+      x28y45: {shelf:'s0011',group:'green',item:'Y1'},
+      x29y45: {shelf:'s0012',group:'green',item:'Y2'},
+      x30y45: {shelf:'s0013',group:'green',item:'Y3'},
+      x31y45: {shelf:'s0014',group:'green',item:'Y4'},
+      x32y45: {shelf:'s0015',group:'green',item:'Y5'},
+      x8y10: {shelf:'s0021',group:'magenta',item:'Z1'},
+      x9y10: {shelf:'s0022',group:'magenta',item:'Z2'},
+      x10y10: {shelf:'s0023',group:'magenta',item:'Z3'},
+      x11y10: {shelf:'s0024',group:'magenta',item:'Z4'},
+      x12y10: {shelf:'s0025',group:'magenta',item:'Z5'}
+    },
+
+    promotions:{
+      Z1:{discount:25},
+      Z3:{discount:25}
+    },
   
     player:{
         x:46,
@@ -161,7 +184,11 @@ function Game(id,level) {
   this.tileDim = 12;
   // inherit the level's properties: map, player start, goal start.
   this.map = level.map;
-  
+
+  this.shelfs = level.shelfs;
+
+  this.promotions = level.promotions;
+
   // level switch
   this.theme = level.theme;
   
@@ -170,6 +197,7 @@ function Game(id,level) {
 
   // set players knowledge level
   this.player.knowledge_level = new Array(this.map.length);
+
   for (var i = 0; i < this.player.knowledge_level.length; i++) {
     this.player.knowledge_level[i] = new Array(this.map[0].length).fill(0);
   }
@@ -235,6 +263,14 @@ Game.prototype.populateMap = function() {
         // TEST TEST SATURATION
         tile.classList.remove('see_0,see_25,see_50,see_75,see_100');
         tile.className += ' see_0';
+
+        if (this.shelfs['x'+x+'y'+y]) {
+          tile.setAttribute('style',tile.getAttribute('style') + ' background-color:' + this.shelfs['x'+x+'y'+y].group);
+        } else {
+          if (this.map[y][x] == 1) { 
+            tile.setAttribute('style',tile.getAttribute('style') + ' background-color:white');
+          }
+        }
        
        // add to layer
        tiles.appendChild(tile);
@@ -303,72 +339,24 @@ Roate a ray from the players point of view and collect information about the map
 Choose strategy based on information.
 */
 Game.prototype.perception= function() {
+  // Clear radars
 
-  // create Navigation Canvas;
-
-  const knowledge_canvas = document.querySelector('#knowledge_canvas');
-
-  if (!knowledge_canvas.getContext) {
-    return;
+  clear_radar = function(ctx) {
+    ctx.clearRect(0,0,100,100);
+    ctx.beginPath();
+    ctx.arc(50, 50, 50, 0, 2 * Math.PI);
+    ctx.stroke();
+    // ctx.beginPath();
+    // ctx.arc(50, 50, 2, 0, 2 * Math.PI);
+    // ctx.fill();
   }
 
-  knowledge_ctx = knowledge_canvas.getContext('2d');
-
-  // set line stroke and line width
-  knowledge_ctx.strokeStyle = 'black';
-  knowledge_ctx.lineWidth = 1;
-
-  knowledge_ctx.clearRect(0,0,100,100);
-  knowledge_ctx.beginPath();
-  knowledge_ctx.arc(50, 50, 50, 0, 2 * Math.PI);
-  knowledge_ctx.stroke();
-  knowledge_ctx.beginPath();
-  knowledge_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
-  knowledge_ctx.fill();
-
-  // create Navigation Canvas;
-
-  const aisle_canvas = document.querySelector('#aisle_canvas');
-
-  if (!aisle_canvas.getContext) {
-    return;
-  }
-
-  aisle_ctx = aisle_canvas.getContext('2d');
-
-  // set line stroke and line width
-  aisle_ctx.strokeStyle = 'black';
-  aisle_ctx.lineWidth = 1;
-
-  aisle_ctx.clearRect(0,0,100,100);
-  aisle_ctx.beginPath();
-  aisle_ctx.arc(50, 50, 50, 0, 2 * Math.PI);
-  aisle_ctx.stroke();
-  aisle_ctx.beginPath();
-  aisle_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
-  aisle_ctx.fill();
-
-  // create Navigation Canvas;
-
-  const aisle_unknown_canvas = document.querySelector('#aisle_unknown_canvas');
-
-  if (!aisle_unknown_canvas.getContext) {
-    return;
-  }
-
-  aisle_unknown_ctx = aisle_unknown_canvas.getContext('2d');
-
-  // set line stroke and line width
-  aisle_unknown_ctx.strokeStyle = 'black';
-  aisle_unknown_ctx.lineWidth = 1;
-
-  aisle_unknown_ctx.clearRect(0,0,100,100);
-  aisle_unknown_ctx.beginPath();
-  aisle_unknown_ctx.arc(50, 50, 50, 0, 2 * Math.PI);
-  aisle_unknown_ctx.stroke();
-  aisle_unknown_ctx.beginPath();
-  aisle_unknown_ctx.arc(50, 50, 5, 0, 2 * Math.PI);
-  aisle_unknown_ctx.fill();
+  clear_radar(this.knowledge_ctx);
+  clear_radar(this.aisle_ctx);
+  clear_radar(this.aisle_unknown_ctx);
+  clear_radar(this.group_ctx);
+  clear_radar(this.item_ctx);
+  clear_radar(this.promotion_ctx);
 
   // set player center
 
@@ -380,6 +368,9 @@ Game.prototype.perception= function() {
     let knowledge_score = 0;
     let unknown_aisle_score  = 0;
     let aisle_score  = 0;
+    let group_score = 0;
+    let item_score = 0;
+    let promotion_score = 0;
     let view_blocked = false;
 
     ray_length = 25;
@@ -427,7 +418,25 @@ Game.prototype.perception= function() {
       } else {
         knowledge_score += this.player.knowledge_level[y][x]
       }
+
+      // If Agent sees group
+      if (this.shelfs['x'+x+'y'+y]) {
+        // Agent sees group
+        if (this.player.knowledge_level[y][x] > 0) {
+          group_score += 1;
+        }
+        // Agent sees item
+        if (this.player.knowledge_level[y][x] > 1) {
+          item_score += 1;
+          // if item is promoted
+          if (this.promotions[this.shelfs['x'+x+'y'+y].item]) {
+            promotion_score += 1;
+            tile.className += ' promotion';
+          }
+        }
+      }
   
+      // set saturation of tile
       let tile = document.getElementById(''.concat('y',y,'x',x));
       //console.log(tile.classList);
       tile.classList.remove('see_0','see_1','see_2');
@@ -450,22 +459,44 @@ Game.prototype.perception= function() {
     let aisle_nav_dx = Math.round(Math.cos(i) * (aisle_score + 1) / ray_length * 50);
     let aisle_unknown_nav_dy = Math.round(Math.sin(i) * (unknown_aisle_score + 1) / ray_length * 50);
     let aisle_unknown_nav_dx = Math.round(Math.cos(i) * (unknown_aisle_score + 1) / ray_length * 50);
+    let group_dy = Math.round(Math.sin(i) * (group_score) / ray_length * 250);
+    let group_dx = Math.round(Math.cos(i) * (group_score) / ray_length * 250);
+    let item_dy = Math.round(Math.sin(i) * (item_score) / ray_length * 250);
+    let item_dx = Math.round(Math.cos(i) * (item_score) / ray_length * 250);
+    let promotion_dy = Math.round(Math.sin(i) * (promotion_score) / ray_length * 250);
+    let promotion_dx = Math.round(Math.cos(i) * (promotion_score) / ray_length * 250);
 
     // draw a red line
-    knowledge_ctx.beginPath();
-    knowledge_ctx.moveTo(nav_x0, nav_y0);
-    knowledge_ctx.lineTo(nav_x0 + know_nav_dx, nav_y0 + know_nav_dy);
-    knowledge_ctx.stroke();
 
-    aisle_unknown_ctx.beginPath();
-    aisle_unknown_ctx.moveTo(nav_x0, nav_y0);
-    aisle_unknown_ctx.lineTo(nav_x0 + aisle_unknown_nav_dx, nav_y0 + aisle_unknown_nav_dy);
-    aisle_unknown_ctx.stroke();
+    this.knowledge_ctx.beginPath();
+    this.knowledge_ctx.moveTo(nav_x0, nav_y0);
+    this.knowledge_ctx.lineTo(nav_x0 + know_nav_dx, nav_y0 + know_nav_dy);
+    this.knowledge_ctx.stroke();
 
-    aisle_ctx.beginPath();
-    aisle_ctx.moveTo(nav_x0, nav_y0);
-    aisle_ctx.lineTo(nav_x0 + aisle_nav_dx, nav_y0 + aisle_nav_dy);
-    aisle_ctx.stroke();
+    this.aisle_unknown_ctx.beginPath();
+    this.aisle_unknown_ctx.moveTo(nav_x0, nav_y0);
+    this.aisle_unknown_ctx.lineTo(nav_x0 + aisle_unknown_nav_dx, nav_y0 + aisle_unknown_nav_dy);
+    this.aisle_unknown_ctx.stroke();
+
+    this.aisle_ctx.beginPath();
+    this.aisle_ctx.moveTo(nav_x0, nav_y0);
+    this.aisle_ctx.lineTo(nav_x0 + aisle_nav_dx, nav_y0 + aisle_nav_dy);
+    this.aisle_ctx.stroke();
+
+    this.group_ctx.beginPath();
+    this.group_ctx.moveTo(nav_x0, nav_y0);
+    this.group_ctx.lineTo(nav_x0 + group_dx, nav_y0 + group_dy);
+    this.group_ctx.stroke();
+
+    this.item_ctx.beginPath();
+    this.item_ctx.moveTo(nav_x0, nav_y0);
+    this.item_ctx.lineTo(nav_x0 + item_dx, nav_y0 + item_dy);
+    this.item_ctx.stroke();
+
+    this.promotion_ctx.beginPath();
+    this.promotion_ctx.moveTo(nav_x0, nav_y0);
+    this.promotion_ctx.lineTo(nav_x0 + promotion_dx, nav_y0 + promotion_dx);
+    this.promotion_ctx.stroke();
 
     // END TEST LINE
 
@@ -755,6 +786,7 @@ Game.prototype.keyboardListener = function() {
  * Gives the goal and player some references.
  */ 
  Game.prototype.placeLevel = function() {
+
     this.populateMap();
     
     this.sizeUp();
@@ -766,7 +798,32 @@ Game.prototype.keyboardListener = function() {
    
     // ..so we can store it in the playerSprite element.
     this.player.el = playerSprite;
-   
+
+    draw_radar = function(canvas_name) {
+
+      const canvas = document.querySelector(canvas_name);
+  
+      if (!canvas.getContext) {
+        return;
+      }
+    
+      ctx = canvas.getContext('2d');
+    
+      // set line stroke and line width
+      ctx.strokeStyle = 'black';
+      ctx.lineWidth = 1;
+  
+      return(ctx);
+  
+    }
+  
+    this.knowledge_ctx = draw_radar('#knowledge_canvas');
+    this.aisle_ctx = draw_radar('#aisle_canvas');
+    this.aisle_unknown_ctx = draw_radar('#aisle_unknown_canvas');
+    this.group_ctx = draw_radar('#group_canvas');
+    this.item_ctx = draw_radar('#item_canvas');
+    this.promotion_ctx = draw_radar('#promotion_canvas');
+
  }
 
  /*

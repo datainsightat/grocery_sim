@@ -24,13 +24,21 @@ div.layer div {
   position: absolute;
 }
 #tiles div {
-  border: 0px solid grey;
+  /*border: 0px solid grey;*/
+  margin: 0px;
+  padding: 0px;
 }
+
 .default .floor {
   background-color: blue
 }
 .default .wall {
-  background-color: red;
+  /*background-color: red;*/
+  border: 1px solid grey;
+}
+
+#promotion {
+  border: 2px dashed red;
 }
 
 .see_0 {
