@@ -105,11 +105,11 @@ let app = {};
       x30y45: {shelf:'s0013',group:'green',item:'Y3'},
       x31y45: {shelf:'s0014',group:'green',item:'Y4'},
       x32y45: {shelf:'s0015',group:'green',item:'Y5'},
-      x8y10: {shelf:'s0021',group:'magenta',item:'Z1'},
-      x9y10: {shelf:'s0022',group:'magenta',item:'Z2'},
-      x10y10: {shelf:'s0023',group:'magenta',item:'Z3'},
-      x11y10: {shelf:'s0024',group:'magenta',item:'Z4'},
-      x12y10: {shelf:'s0025',group:'magenta',item:'Z5'}
+      x6y8: {shelf:'s0021',group:'magenta',item:'Z1'},
+      x6y9: {shelf:'s0022',group:'magenta',item:'Z2'},
+      x6y10: {shelf:'s0023',group:'magenta',item:'Z3'},
+      x6y11: {shelf:'s0024',group:'magenta',item:'Z4'},
+      x6y12: {shelf:'s0025',group:'magenta',item:'Z5'}
     },
 
     promotions:{
@@ -381,6 +381,7 @@ Game.prototype.perception= function() {
       let dx = Math.round(Math.cos(i) * j);
       let y = y0 + dy;
       let x = x0 + dx;
+      let tile = document.getElementById(''.concat('y',y,'x',x));
 
       // if coordinates are out of Matrix, break
       //console.log(y,this.player.knowledge_level.length,x,this.player.knowledge_level[0].length);
@@ -428,6 +429,7 @@ Game.prototype.perception= function() {
         // Agent sees item
         if (this.player.knowledge_level[y][x] > 1) {
           item_score += 1;
+          tile.innerHTML = this.shelfs['x'+x+'y'+y].item;
           // if item is promoted
           if (this.promotions[this.shelfs['x'+x+'y'+y].item]) {
             promotion_score += 1;
@@ -437,7 +439,7 @@ Game.prototype.perception= function() {
       }
   
       // set saturation of tile
-      let tile = document.getElementById(''.concat('y',y,'x',x));
+
       //console.log(tile.classList);
       tile.classList.remove('see_0','see_1','see_2');
       tile.className += ' see_'.concat(this.player.knowledge_level[y][x]);
@@ -495,7 +497,7 @@ Game.prototype.perception= function() {
 
     this.promotion_ctx.beginPath();
     this.promotion_ctx.moveTo(nav_x0, nav_y0);
-    this.promotion_ctx.lineTo(nav_x0 + promotion_dx, nav_y0 + promotion_dx);
+    this.promotion_ctx.lineTo(nav_x0 + promotion_dx, nav_y0 + promotion_dy);
     this.promotion_ctx.stroke();
 
     // END TEST LINE

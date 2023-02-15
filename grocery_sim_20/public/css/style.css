@@ -32,13 +32,22 @@ div.layer div {
 .default .floor {
   background-color: blue
 }
-.default .wall {
-  /*background-color: red;*/
-  border: 1px solid grey;
+
+.promotion{
+  animation: blinkingBackground 2s infinite;
 }
 
-#promotion {
-  border: 2px dashed red;
+@keyframes blinkingBackground{
+  0%		{ opacity: 0%;}
+  25%		{ opacity: 75%;}
+  50%		{ opacity: 100%;}
+  75%		{ opacity: 75%;}
+  100%	{ opacity: 0%;}
+}
+
+.default .wall {
+  /*background-color: red;*/
+  /*border: 1px solid grey;*/
 }
 
 .see_0 {
