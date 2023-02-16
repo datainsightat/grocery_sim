@@ -1,8 +1,11 @@
-body {
+html, body {
   font-family: Calibri;
   transition: 0.2s ease;
   text-align: center;
+  margin: 0;
+  padding: 0;
 }
+
 body.success  {
   background-color: #b7f0b7;
   transition: 0.2s ease;
@@ -25,8 +28,11 @@ div.layer div {
 }
 #tiles div {
   /*border: 0px solid grey;*/
-  margin: 0px;
-  padding: 0px;
+  margin: 0;
+  padding: 0;
+  box-sizing:border-box;
+  -moz-box-sizing:border-box;
+  -webkit-box-sizing:border-box;
 }
 
 .default .floor {
@@ -47,7 +53,7 @@ div.layer div {
 
 .default .wall {
   /*background-color: red;*/
-  /*border: 1px solid grey;*/
+  border: 1px solid lightgrey;
 }
 
 .see_0 {

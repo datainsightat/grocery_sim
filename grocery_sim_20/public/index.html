@@ -14,72 +14,80 @@
 </head>
 
 <body>
+
   <h1>Virtual Customer Simulation LAB 0.1</h1>
   <!-- game container -->
   <div id="game-container-1" class="game-container">
-    <div id="map-and-controls">
-     <!-- start game map -->
-     <div id="game-map-1" class="game-map">
-       <div id="tiles" class="layer"></div>
-       <div id="sprites" class="layer"></div>
-       <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
-     </div>
 
-    <div class="grid-container">
+    <div id="map-and-controls">
+
+      <!-- start game map -->
+      <div id="game-map-1" class="game-map">
+        <div id="tiles" class="layer"></div>
+        <div id="sprites" class="layer"></div>
+        <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
+      </div>
 
       <!-- controls added here -->
-      <div id="controls" class="radar" style="grid-column-start: 1;grid-row-start: 1;grid-column-end: 3;">
-        <button id="up"></button>
-        <div id="horiz">
-          <button id="left"></button>
-          <button id="right"></button>
+      <div class="grid-container">
+        <div id="controls" class="radar" style="grid-column-start: 1;grid-row-start: 1;grid-column-end: 3;">
+          <button id="up"></button>
+          <div id="horiz">
+            <button id="left"></button>
+            <button id="right"></button>
+          </div>
+          <button id="down"></button>
         </div>
-        <button id="down"></button>
       </div>
 
-      <!-- Navigation -->
 
-      <div class="radar" style="grid-column-start: 1;grid-row-start: 2;grid-column-end: 2;">
-        <div class="header_nav">Knowledge</div>
-        <canvas id="knowledge_canvas" height="100" width="100"></canvas>
-      </div>
+      <!-- Perception -->
+      <div class="grid-container">
 
-      <div class="radar" style="grid-column-start: 1;grid-row-start: 3;">
-        <div class="header_nav">Aisles</div>  
-        <canvas id="aisle_canvas" height="100" width="100"></canvas>
-      </div>
+        <div class="radar" style="grid-column-start: 1;grid-row-start: 1;">
+          <div class="header_nav">Knowledge</div>
+          <canvas id="knowledge_canvas" height="100" width="100"></canvas>
+        </div>
 
-      <div class="radar"  style="grid-column-start: 2;grid-row-start: 3;">
-        <div class="header_nav">Unknown</div>
-        <canvas id="aisle_unknown_canvas" height="100" width="100"></canvas>
-      </div>
+        <div class="radar" style="grid-column-start: 1;grid-row-start: 2;">
+          <div class="header_nav">Aisles</div>  
+          <canvas id="aisle_canvas" height="100" width="100"></canvas>
+        </div>
 
-      <div class="radar" style="grid-column-start: 1;grid-row-start: 4;">
-        <div class="header_nav">Groups</div>  
-        <canvas id="group_canvas" height="100" width="100"></canvas>
-      </div>
+        <div class="radar"  style="grid-column-start: 2;grid-row-start: 2;">
+          <div class="header_nav">Unknown</div>
+          <canvas id="aisle_unknown_canvas" height="100" width="100"></canvas>
+        </div>
 
-      <div class="radar" style="grid-column-start: 1;grid-row-start: 5;">
-        <div class="header_nav">Items</div>  
-        <canvas id="item_canvas" height="100" width="100"></canvas>
-      </div>
+        <div class="radar" style="grid-column-start: 1;grid-row-start: 3;">
+          <div class="header_nav">Groups</div>  
+          <canvas id="group_canvas" height="100" width="100"></canvas>
+        </div>
 
-      <div class="radar" style="grid-column-start: 1;grid-row-start: 6;">
-        <div class="header_nav">Promotions</div>  
-        <canvas id="promotion_canvas" height="100" width="100"></canvas>
+        <div class="radar" style="grid-column-start: 1;grid-row-start: 4;">
+          <div class="header_nav">Items</div>  
+          <canvas id="item_canvas" height="100" width="100"></canvas>
+        </div>
+
+        <div class="radar" style="grid-column-start: 1;grid-row-start: 5;">
+          <div class="header_nav">Promotions</div>  
+          <canvas id="promotion_canvas" height="100" width="100"></canvas>
+        </div>
+
       </div>
 
     </div>
 
-   </div>
-   <!-- end game map -->
-   <p id="text-1" class="text">
+    <!-- end game map -->
+    <p id="text-1" class="text">
       Use cursor keys or buttons.
-   <p>
-</div>
+    <p>
+
+  </div>
 
   <!-- custom js -->
   <script src="/js/script.js"></script>
+
 </body>
 
 </html>
