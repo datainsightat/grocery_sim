@@ -22,10 +22,12 @@ p {
 .game-map {
   position: relative;
 }
+
 div.layer, 
 div.layer div {
   position: absolute;
 }
+
 #tiles div {
   /*border: 0px solid grey;*/
   margin: 0;

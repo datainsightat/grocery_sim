@@ -12,6 +12,7 @@ let app = {};
     // console.log(level);
 
     this.el = document.getElementById(id);
+    this.slist = document.getElementById('shopping-list');
     
     // level addition
     this.level_idx = 0;
@@ -30,8 +31,6 @@ let app = {};
     this.promotions = level.promotions;
 
     this.theme = level.theme;
-
-    console.log(this.theme);
     
     // make a copy of the level's player.
     this.player = {...level.player};
@@ -49,7 +48,19 @@ let app = {};
     // make a copy of the goal.s
     this.goal = {...level.goal};
 
-    // console.log(this.map);
+    // generate shoppinglist
+    min = 1;
+    max = 10;
+    no_items = Math.floor(Math.random() * (max - min + 1) + min);
+
+    this.player.shoppinglist = [];
+
+    for (var i = 0; i < no_items; i++) {
+      j = Math.floor(Math.random() * (Object.keys(this.shelfs).length - 1 + 1) + 1) - 1;
+      this.player.shoppinglist.push(this.shelfs[Object.keys(this.shelfs)[j]]);
+    }
+
+    // console.log(this.player.shoppinglist.sort());
 
   }
 
@@ -119,6 +130,39 @@ let app = {};
         // add to layer
         tiles.appendChild(tile);
       }
+    }
+  }
+
+  /*
+  * Applies the level theme as a class to the game element. 
+  * Populates the map by adding tiles and sprites to their respective layers.
+  */
+  Game.prototype.populateShoppinglist = function() {
+    
+    // add theme call
+    this.slist.className = 'shopping-list ' + this.theme;
+
+    // make a reference to the tiles layer in the DOM.
+    let sitems = this.slist.querySelector('#sitems');
+    
+    // set up our loop to populate the grid.
+    for (var i = 0; i < this.player.shoppinglist.length; ++i) {
+
+      let item_object = this.player.shoppinglist[Object.keys(this.player.shoppinglist)[i]]
+      
+      // call the helper function
+      let sitem = this.createEl(0,i,1);
+
+      sitem.setAttribute('id',item_object.item);
+
+      sitem.className += ' see_100';
+
+      sitem.setAttribute('style',sitem.getAttribute('style') + ' background-color:' + item_object.group);
+      sitem.innerHTML = item_object.item
+      
+      console.log(item_object)
+      // add to layer
+      sitems.appendChild(sitem);
     }
   }
 
@@ -699,6 +743,8 @@ let app = {};
   Game.prototype.placeLevel = function() {
 
     this.populateMap();
+
+    this.populateShoppinglist();
     
     this.sizeUp();
     
