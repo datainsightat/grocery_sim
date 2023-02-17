@@ -223,18 +223,25 @@ let app = {};
     let nav_x0 = 50;
     let nav_y0 = 50;
 
-    let knowledge_avg = 0;
     let knowledge_sum = 0;
-    let unknown_aisle_avg = 0;
     let unknown_aisle_sum = 0;
-    let aisle_avg = 0;
     let aisle_sum = 0;
-    let group_avg = 0;
     let group_sum = 0;
-    let item_avg = 0;
     let item_sum = 0;
-    let promotion_avg = 0;
     let promotion_sum = 0;
+
+    let knowledge_sin = 0;
+    let knowledge_cos = 0;
+    let unknown_aisle_sin = 0;
+    let unknown_aisle_cos = 0;
+    let aisle_sin = 0;
+    let aisle_cos = 0;
+    let group_sin = 0;
+    let group_cos = 0;
+    let item_sin = 0;
+    let item_cos = 0;
+    let promotion_sin = 0;
+    let promotion_cos = 0;
 
     let rays = 8
 
@@ -258,7 +265,6 @@ let app = {};
         let tile = document.getElementById(''.concat('y',y,'x',x));
 
         // if coordinates are out of Matrix, break
-        //console.log(y,this.player.knowledge_level.length,x,this.player.knowledge_level[0].length);
         if (y < 0 | y > (this.player.knowledge_level.length-1) | x < 0 | x > (this.player.knowledge_level[0].length-1)) {
           knowledge_score += 2*((ray_length + 1)-j);
           break;
@@ -325,21 +331,7 @@ let app = {};
 
       }
 
-      knowledge_avg += knowledge_score * i;
-      unknown_aisle_avg += unknown_aisle_score * i;
-      aisle_avg += aisle_score * i;
-      group_avg += group_score * i;
-      item_avg += item_score * i;
-      promotion_avg += promotion_score * i;
-
-      knowledge_sum += knowledge_score;
-      unknown_aisle_sum += unknown_aisle_score;
-      aisle_sum += aisle_score;
-      group_sum += group_score;
-      item_sum += item_score;
-      promotion_sum += promotion_score;
-
-      // console.log(i,aisle_score);
+      // #onsole.log(i,aisle_score);
 
       // TEST LINE
 
@@ -356,7 +348,7 @@ let app = {};
       let promotion_dy = Math.sin(i) * (promotion_score) / ray_length * 250;
       let promotion_dx = Math.cos(i) * (promotion_score) / ray_length * 250;
 
-      // draw a red line
+      // draw a black line
       draw_line(this.knowledge_ctx,nav_x0,nav_y0,know_nav_dx,know_nav_dy,'black',1);
       draw_line(this.aisle_ctx,nav_x0,nav_y0,aisle_nav_dx,aisle_nav_dy,'black',1);
       draw_line(this.aisle_unknown_ctx,nav_x0,nav_y0,aisle_unknown_nav_dx,aisle_unknown_nav_dy,'black',1);
@@ -364,31 +356,53 @@ let app = {};
       draw_line(this.item_ctx,nav_x0,nav_y0,item_dx,item_dy,'black',1);
       draw_line(this.promotion_ctx,nav_x0,nav_y0,promotion_dx,promotion_dy,'black',1);
 
-      // END TEST LINE
+      // Aggregate Values
+
+      knowledge_sin += Math.sin(i) * knowledge_score;
+      knowledge_cos += Math.cos(i) * knowledge_score;
+      unknown_aisle_sin += Math.sin(i) * unknown_aisle_score;
+      unknown_aisle_cos += Math.cos(i) * unknown_aisle_score;
+      aisle_sin += Math.sin(i) * aisle_score;
+      aisle_cos += Math.cos(i) * aisle_score;
+      group_sin += Math.sin(i) * group_score;
+      group_cos += Math.cos(i) * group_score;
+      item_sin += Math.sin(i) * item_score;
+      item_cos += Math.cos(i) * item_score;
+      promotion_sin += Math.sin(i) * promotion_score;
+      promotion_cos += Math.cos(i) * promotion_score;
+
+      knowledge_sum += knowledge_score;
+      unknown_aisle_sum += unknown_aisle_score;
+      aisle_sum += aisle_score;
+      group_sum += group_score;
+      item_sum += item_score;
+      promotion_sum += promotion_score;
 
     }
 
-    knowledge_avg = knowledge_avg / knowledge_sum;
-    unknown_aisle_avg = unknown_aisle_avg / unknown_aisle_sum;
-    aisle_avg = aisle_avg / aisle_sum;
-    group_avg = group_avg / group_sum;
-    item_avg = item_avg / item_sum;
-    promotion_avg = promotion_avg / promotion_sum;
+    //https://en.wikipedia.org/wiki/Circular_mean
 
-    console.log(aisle_avg);
+    knowledge_arc = Math.atan2(knowledge_sin / knowledge_sum, knowledge_cos / knowledge_sum);
+    unknown_aisle_arc = Math.atan2(unknown_aisle_sin / unknown_aisle_sum, unknown_aisle_cos / unknown_aisle_sum);
+    aisle_arc = Math.atan2(aisle_sin / aisle_sum, aisle_cos / aisle_sum);
+    group_arc = Math.atan2(group_sin / group_sum, group_cos / group_sum);
+    item_arc = Math.atan2(item_sin / item_sum, item_cos / item_sum);
+    promotion_arc = Math.atan2(promotion_sin / promotion_sum, promotion_cos / promotion_sum);
 
-    let know_nav_dy = Math.sin(knowledge_avg) * 50;
-    let know_nav_dx = Math.cos(knowledge_avg) * 50;
-    let aisle_nav_dy = Math.sin(aisle_avg) * 50;
-    let aisle_nav_dx = Math.cos(aisle_avg) * 50;
-    let aisle_unknown_nav_dy = Math.sin(unknown_aisle_avg) * 50;
-    let aisle_unknown_nav_dx = Math.cos(unknown_aisle_avg) * 50;
-    let group_dy = Math.sin(group_avg) * 50;
-    let group_dx = Math.cos(group_avg) * 50;
-    let item_dy = Math.sin(item_avg) * 50;
-    let item_dx = Math.cos(item_avg) * 50;
-    let promotion_dy = Math.sin(promotion_avg) * 50;
-    let promotion_dx = Math.cos(promotion_avg) * 50;
+    // console.log(aisle_avg);
+
+    let know_nav_dy = Math.sin(knowledge_arc) * 50;
+    let know_nav_dx = Math.cos(knowledge_arc) * 50;
+    let aisle_nav_dy = Math.sin(aisle_arc) * 50;
+    let aisle_nav_dx = Math.cos(aisle_arc) * 50;
+    let aisle_unknown_nav_dy = Math.sin(unknown_aisle_arc) * 50;
+    let aisle_unknown_nav_dx = Math.cos(unknown_aisle_arc) * 50;
+    let group_dy = Math.sin(group_arc) * 50;
+    let group_dx = Math.cos(group_arc) * 50;
+    let item_dy = Math.sin(item_arc) * 50;
+    let item_dx = Math.cos(item_arc) * 50;
+    let promotion_dy = Math.sin(promotion_arc) * 50;
+    let promotion_dx = Math.cos(promotion_arc) * 50;
 
     // console.log(knowledge_sum,knowledge_avg,know_nav_dx,know_nav_dy);
 
