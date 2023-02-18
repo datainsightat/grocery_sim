@@ -18,7 +18,7 @@ let app = {};
     this.level_idx = 0;
     
     // establish the basic properties common to all this objects.
-    this.tileTypes = ['floor','wall'];
+    this.tileTypes = ['floor','wall','shoppinglist'];
     this.tileDim = 12;
 
     // inherit the level's properties: map, player start, goal start.
@@ -60,7 +60,7 @@ let app = {};
       this.player.shoppinglist.push(this.shelfs[Object.keys(this.shelfs)[j]]);
     }
 
-    // console.log(this.player.shoppinglist.sort());
+    console.log(this.player.shoppinglist.sort());
 
   }
 
@@ -75,15 +75,21 @@ let app = {};
         
     // two class names: one for tile, one or the tile type.
     el.className = type;
+
+    if (type==3) {
+      dim = this.tileDim * 2;
+    } else {
+      dim = this.tileDim;
+    }
     
     // set width and height of tile based on the passed-in dimensions.
-    el.style.width = el.style.height = this.tileDim + 'px';
+    el.style.width = el.style.height = dim + 'px';
     
     // set left positions based on x coordinate.
-    el.style.left = x*this.tileDim + 'px';
+    el.style.left = x*dim + 'px';
     
     // set top position based on y coordinate.
-    el.style.top = y*this.tileDim + 'px';
+    el.style.top = y*dim + 'px';
 
     return el;
   }
@@ -140,7 +146,7 @@ let app = {};
   Game.prototype.populateShoppinglist = function() {
     
     // add theme call
-    this.slist.className = 'shopping-list ' + this.theme;
+    //this.slist.className = 'shopping-list ' + this.theme;
 
     // make a reference to the tiles layer in the DOM.
     let sitems = this.slist.querySelector('#sitems');
@@ -151,7 +157,7 @@ let app = {};
       let item_object = this.player.shoppinglist[Object.keys(this.player.shoppinglist)[i]]
       
       // call the helper function
-      let sitem = this.createEl(0,i,1);
+      let sitem = this.createEl(0,i,3);
 
       sitem.setAttribute('id',item_object.item);
 
@@ -159,8 +165,6 @@ let app = {};
 
       sitem.setAttribute('style',sitem.getAttribute('style') + ' background-color:' + item_object.group);
       sitem.innerHTML = item_object.item
-      
-      console.log(item_object)
       // add to layer
       sitems.appendChild(sitem);
     }
@@ -208,7 +212,24 @@ let app = {};
   /*
   * Triggers a collide animation on the player sprite.
   */
-  Game.prototype.collide = function() {
+  Game.prototype.collide = function(y,x) {
+
+    try {
+      item = this.shelfs['x'+x+'y'+y].item;
+    } catch (error) {
+      item = 'NA';
+    }
+
+    for (var i = 0; i < this.player.shoppinglist.length; ++y) {
+      if (item == this.player.shoppinglist[i].item) {
+        delete this.player.shoppinglist[i];
+        this.prototype.populateShoppinglist();
+        break;
+      }
+    }
+
+    console.log(y,x,item);
+
     this.player.el.className += ' collide';
     
     let obj = this;
@@ -473,7 +494,7 @@ let app = {};
     
       // if next tile is a wall, add collide effect and return
       if (nextTile ==1) {
-          this.collide();
+          this.collide(this.player.y,this.player.x-1);
           return;
       }
       // change coordinates of player object
@@ -495,7 +516,7 @@ let app = {};
         
     let nextTile = this.map[this.player.y-1][this.player.x];
     if (nextTile ==1) {
-          this.collide();
+          this.collide(this.player.y-1,this.player.x);
           return;
     }
     this.player.y -=1;
@@ -514,7 +535,7 @@ let app = {};
     nextTile = this.map[this.player.y][this.player.x+1];
           
     if (nextTile ==1) {
-          this.collide()
+          this.collide(this.player.y,this.player.x+1)
           return;
     }
     this.player.x += 1;
@@ -529,14 +550,14 @@ let app = {};
   */
   Game.prototype.moveDown = function()  {
     if (this.player.y == this.map.length-1) {
-          this.collide();
+          this.collide(nextTile);
           return;
     }
     // find the next tile in the 2D array.
           
     let nextTile = this.map[this.player.y+1][this.player.x];
       if (nextTile ==1) {
-          this.collide()
+          this.collide(this.player.y+1,this.player.x)
           return;
     }
     this.player.y += 1;

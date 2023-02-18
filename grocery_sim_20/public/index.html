@@ -18,26 +18,27 @@
   <h1>Virtual Customer Simulation LAB 0.1</h1>
   <!-- game container -->
 
-  <div id="shopping-list" class="game-map">
-    <div id="sitems" class="layer"></div>
-  </div>
+  <div class="grid-main">
 
-  <div id="game-container-1" class="game-container">
-
-    <div id="map-and-controls">
-      
-      <!-- start game map -->
-      <div id="game-map-1" class="game-map">
-        <div id="tiles" class="layer"></div>
-        <div id="sprites" class="layer"></div>
-        <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
-      </div>
-
+    <div id="shopping-list" style=" width: 200px;grid-column-start: 1;grid-row-start: 1;">Shopping List <!-- class="game-map"-->
+      <div id="sitems"></div>
     </div>
 
-    <!-- controls added here -->
-    <div class="grid-container">
-      <div id="controls" class="radar" style="grid-column-start: 1;grid-row-start: 1;grid-column-end: 3;">
+    <div id="game-container-1" class="game-container" style="grid-column-start: 2;grid-row-start: 1;">Shop
+
+      <div id="map-and-controls">
+        
+        <!-- start game map -->
+        <div id="game-map-1" class="game-map">
+          <div id="tiles" class="layer"></div>
+          <div id="sprites" class="layer"></div>
+          <div id="success-msg">Goal reached! Tap the maze to change levels.</div>
+        </div>
+
+      </div>
+
+      <!-- controls added here -->
+      <div id="controls" class="radar">
         <button id="up"></button>
         <div id="horiz">
           <button id="left"></button>
@@ -45,46 +46,47 @@
         </div>
         <button id="down"></button>
       </div>
+
+      <!-- end game map -->
+      <p id="text-1" class="text">
+        Use cursor keys or buttons.
+      <p>
+
     </div>
 
-    <!-- end game map -->
-    <p id="text-1" class="text">
-      Use cursor keys or buttons.
-    <p>
+    <!-- Perception -->
+    <div id="perception" class="grid-perception" style="grid-column-start: 3;grid-row-start: 1;">Perception
 
-  </div>
+      <div class="radar" style="grid-column-start: 1;grid-row-start: 1;">
+        <div class="header_nav">Knowledge</div>
+        <canvas id="knowledge_canvas" height="100" width="100"></canvas>
+      </div>
 
-  <!-- Perception -->
-  <div id="perception" class="grid-container">
+      <div class="radar" style="grid-column-start: 1;grid-row-start: 2;">
+        <div class="header_nav">Aisles</div>  
+        <canvas id="aisle_canvas" height="100" width="100"></canvas>
+      </div>
 
-    <div class="radar" style="grid-column-start: 1;grid-row-start: 1;">
-      <div class="header_nav">Knowledge</div>
-      <canvas id="knowledge_canvas" height="100" width="100"></canvas>
-    </div>
+      <div class="radar"  style="grid-column-start: 2;grid-row-start: 2;">
+        <div class="header_nav">Unknown</div>
+        <canvas id="aisle_unknown_canvas" height="100" width="100"></canvas>
+      </div>
 
-    <div class="radar" style="grid-column-start: 1;grid-row-start: 2;">
-      <div class="header_nav">Aisles</div>  
-      <canvas id="aisle_canvas" height="100" width="100"></canvas>
-    </div>
+      <div class="radar" style="grid-column-start: 1;grid-row-start: 3;">
+        <div class="header_nav">Groups</div>  
+        <canvas id="group_canvas" height="100" width="100"></canvas>
+      </div>
 
-    <div class="radar"  style="grid-column-start: 2;grid-row-start: 2;">
-      <div class="header_nav">Unknown</div>
-      <canvas id="aisle_unknown_canvas" height="100" width="100"></canvas>
-    </div>
+      <div class="radar" style="grid-column-start: 1;grid-row-start: 4;">
+        <div class="header_nav">Items</div>  
+        <canvas id="item_canvas" height="100" width="100"></canvas>
+      </div>
 
-    <div class="radar" style="grid-column-start: 1;grid-row-start: 3;">
-      <div class="header_nav">Groups</div>  
-      <canvas id="group_canvas" height="100" width="100"></canvas>
-    </div>
+      <div class="radar" style="grid-column-start: 1;grid-row-start: 5;">
+        <div class="header_nav">Promotions</div>  
+        <canvas id="promotion_canvas" height="100" width="100"></canvas>
+      </div>
 
-    <div class="radar" style="grid-column-start: 1;grid-row-start: 4;">
-      <div class="header_nav">Items</div>  
-      <canvas id="item_canvas" height="100" width="100"></canvas>
-    </div>
-
-    <div class="radar" style="grid-column-start: 1;grid-row-start: 5;">
-      <div class="header_nav">Promotions</div>  
-      <canvas id="promotion_canvas" height="100" width="100"></canvas>
     </div>
 
   </div>
