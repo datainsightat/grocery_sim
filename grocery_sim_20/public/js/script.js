@@ -60,7 +60,9 @@ let app = {};
       this.player.shoppinglist.push(this.shelfs[Object.keys(this.shelfs)[j]]);
     }
 
-    console.log(this.player.shoppinglist.sort());
+    // this.player.score.steps = 0;
+    // this.player.score.money = 0;
+
 
   }
 
@@ -215,20 +217,23 @@ let app = {};
   Game.prototype.collide = function(y,x) {
 
     try {
-      item = this.shelfs['x'+x+'y'+y].item;
+      item_store = this.shelfs['x'+x+'y'+y].item;
     } catch (error) {
-      item = 'NA';
+      item_store = 'NA';
     }
 
-    for (var i = 0; i < this.player.shoppinglist.length; ++y) {
-      if (item == this.player.shoppinglist[i].item) {
-        delete this.player.shoppinglist[i];
-        this.prototype.populateShoppinglist();
+    for (var i = 0; i < this.player.shoppinglist.length; ++i) {
+      // console.log(i,item_store,this.player.shoppinglist[i].item,item_store == this.player.shoppinglist[i].item)
+      if (item_store == this.player.shoppinglist[i].item) {
+        this.player.shoppinglist.splice(i, 1);
+        document.getElementById(item_store).outerHTML = '';
+        this.shelfs['x'+x+'y'+y].quantity -= 1;
+        // console.log(this.shelfs['x'+x+'y'+y]);
         break;
       }
     }
 
-    console.log(y,x,item);
+    // console.log(y,x,item_store);
 
     this.player.el.className += ' collide';
     
@@ -263,7 +268,11 @@ let app = {};
     }
 
     draw_line = function(ctx,nav_x0,nav_y0,nav_dx,nav_dy,color,width) {
-      ctx.strokeStyle = color;
+      if (color == 'red') {
+        ctx.strokeStyle = 'rgba(255,0,0,0.4)';
+      } else {
+        ctx.strokeStyle = color;
+      }
       ctx.lineWidth = width;
       ctx.beginPath();
       ctx.moveTo(nav_x0, nav_y0);
@@ -471,12 +480,12 @@ let app = {};
 
     // console.log(knowledge_sum,knowledge_avg,know_nav_dx,know_nav_dy);
 
-    draw_line(this.knowledge_ctx,nav_x0,nav_y0,know_nav_dx,know_nav_dy,'red',2);
-    draw_line(this.aisle_ctx,nav_x0,nav_y0,aisle_nav_dx,aisle_nav_dy,'red',2);
-    draw_line(this.aisle_unknown_ctx,nav_x0,nav_y0,aisle_unknown_nav_dx,aisle_unknown_nav_dy,'red',2);
-    draw_line(this.group_ctx,nav_x0,nav_y0,group_dx,group_dy,'red',2);
-    draw_line(this.item_ctx,nav_x0,nav_y0,item_dx,item_dy,'red',2);
-    draw_line(this.promotion_ctx,nav_x0,nav_y0,promotion_dx,promotion_dy,'red',2);
+    draw_line(this.knowledge_ctx,nav_x0,nav_y0,know_nav_dx,know_nav_dy,'red',3);
+    draw_line(this.aisle_ctx,nav_x0,nav_y0,aisle_nav_dx,aisle_nav_dy,'red',3);
+    draw_line(this.aisle_unknown_ctx,nav_x0,nav_y0,aisle_unknown_nav_dx,aisle_unknown_nav_dy,'red',3);
+    draw_line(this.group_ctx,nav_x0,nav_y0,group_dx,group_dy,'red',3);
+    draw_line(this.item_ctx,nav_x0,nav_y0,item_dx,item_dy,'red',3);
+    draw_line(this.promotion_ctx,nav_x0,nav_y0,promotion_dx,promotion_dy,'red',3);
 
   }
 

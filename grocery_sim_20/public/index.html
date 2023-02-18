@@ -18,13 +18,17 @@
   <h1>Virtual Customer Simulation LAB 0.1</h1>
   <!-- game container -->
 
-  <div class="grid-main">
+  <div class="grid-main center">
 
-    <div id="shopping-list" style=" width: 200px;grid-column-start: 1;grid-row-start: 1;">Shopping List <!-- class="game-map"-->
+    <h5 style="grid-column-start: 1;grid-row-start: 1;">Shopping List</h5>
+    <h5 style="grid-column-start: 2;grid-row-start: 1;">Shop</h5>
+    <h5 style="grid-column-start: 3;grid-row-start: 1;">Perception</h5>
+
+    <div id="shopping-list" style="grid-column-start: 1;grid-row-start:2;" class="center">
       <div id="sitems"></div>
     </div>
 
-    <div id="game-container-1" class="game-container" style="grid-column-start: 2;grid-row-start: 1;">Shop
+    <div id="game-container-1" class="game-container" style="grid-column-start: 2;grid-row-start:2;">
 
       <div id="map-and-controls">
         
@@ -38,6 +42,7 @@
       </div>
 
       <!-- controls added here -->
+      <!--
       <div id="controls" class="radar">
         <button id="up"></button>
         <div id="horiz">
@@ -46,16 +51,19 @@
         </div>
         <button id="down"></button>
       </div>
+      -->
 
       <!-- end game map -->
+      <!--
       <p id="text-1" class="text">
         Use cursor keys or buttons.
       <p>
+      -->
 
     </div>
 
     <!-- Perception -->
-    <div id="perception" class="grid-perception" style="grid-column-start: 3;grid-row-start: 1;">Perception
+    <div id="perception" class="grid-perception" style="grid-column-start: 3;grid-row-start:2;">
 
       <div class="radar" style="grid-column-start: 1;grid-row-start: 1;">
         <div class="header_nav">Knowledge</div>
