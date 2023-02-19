@@ -833,9 +833,9 @@ let app = {};
 
 Game.prototype.step = function() {
 
-  let strategy = 0;
+  var e = document.getElementById("strategy");
 
-  if (strategy == 0) {;
+  if (e.value == 'random') {;
     this.strategyRandom();
   }
 
