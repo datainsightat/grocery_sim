@@ -722,6 +722,48 @@ let app = {};
       this.goal = {...level.goal};
   }
 
+
+
+/*
+################
+# CONTROL LOOP #
+################
+*/
+
+Game.prototype.oneStep = function() {
+
+  var e = document.getElementById("strategy");
+
+  if (e.value == 'random') {;
+    this.strategyRandom();
+  }
+
+}
+
+Game.prototype.strategyRandom = function() {
+
+  keyCode = Math.floor(Math.random() * (40 - 37 + 1) + 37);
+
+  switch (keyCode) { 
+    case 37:
+    this.moveLeft();
+    break;
+    
+    case 38:
+    this.moveUp();
+    break;
+
+    case 39:
+    this.moveRight();
+    break;
+      
+    case 40:
+    this.moveDown();
+    break;
+  }
+
+}
+
 /*
 #############
 # LISTENERS #
@@ -798,72 +840,67 @@ let app = {};
     * Adds mouse down listeners to buttons
     */
   Game.prototype.buttonListeners = function() {
+    
     let up = document.getElementById('up');
     let left = document.getElementById('left');
     let down = document.getElementById('down')
     let right = document.getElementById('right');
+    let sequence = document.getElementById('sequence');
     
     // the sprite is out of date
     let obj = this;
-    up.addEventListener('mousedown',function() {
 
+    up.addEventListener('mousedown',function() {
       obj.moveUp();
       obj.checkGoal();   
     });
+
     down.addEventListener('mousedown',function() {
       obj.moveDown();
       obj.checkGoal();   
     });
+
     left.addEventListener('mousedown',function() {
       obj.moveLeft();
       obj.checkGoal();   
     });
+
     right.addEventListener('mousedown',function() {
       obj.moveRight();
       obj.checkGoal();   
     });
+
+    sequence_1.addEventListener('mousedown',function() {
+      for (var i = 0; i < 1; i++) {
+        obj.oneStep();
+      }
+    });
+
+    sequence_10.addEventListener('mousedown',function() {
+      for (var i = 0; i < 10; i++) {
+        obj.oneStep();
+      }
+    });
+
+    sequence_100.addEventListener('mousedown',function() {
+      for (var i = 0; i < 100; i++) {
+        obj.oneStep();
+      }
+    });
+
+    sequence_1000.addEventListener('mousedown',function() {
+      for (var i = 0; i < 1000; i++) {
+        obj.oneStep();
+      }
+    });
+
+    sequence_10000.addEventListener('mousedown',function() {
+      for (var i = 0; i < 10000; i++) {
+        obj.oneStep();
+      }
+    });
     
   }
-
-/*
-################
-# CONTROL LOOP #
-################
-*/
-
-Game.prototype.step = function() {
-
-  var e = document.getElementById("strategy");
-
-  if (e.value == 'random') {;
-    this.strategyRandom();
-  }
-
-}
-
-Game.prototype.strategyRandom = function() {
-
-  keyCode = Math.floor(Math.random() * (40 - 37 + 1) + 37);
-
-  switch (keyCode) { 
-    case 37:
-    this.moveLeft();
-    break;
-    
-    case 38:
-    this.moveUp();
-    break;
-
-    case 39:
-    this.moveRight();
-    break;
-      
-    case 40:
-    this.moveDown();
-    break;
-  }
-
-}
 
 
 /*
