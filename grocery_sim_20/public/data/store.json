@@ -63,21 +63,21 @@
     ],
 
     "shelfs":{
-        "x6y48": {"shelf":"s0001","group":"red","item":"X1","quantity":5},
-        "x7y48": {"shelf":"s0002","group":"red","item":"X2","quantity":5},
-        "x8y48": {"shelf":"s0003","group":"red","item":"X3","quantity":5},
-        "x9y48": {"shelf":"s0004","group":"red","item":"X4","quantity":5},
-        "x10y48": {"shelf":"s0005","group":"red","item":"X5","quantity":5},
-        "x28y45": {"shelf":"s0011","group":"green","item":"Y1","quantity":5},
-        "x29y45": {"shelf":"s0012","group":"green","item":"Y2","quantity":5},
-        "x30y45": {"shelf":"s0013","group":"green","item":"Y3","quantity":5},
-        "x31y45": {"shelf":"s0014","group":"green","item":"Y4","quantity":5},
-        "x32y45": {"shelf":"s0015","group":"green","item":"Y5","quantity":5},
-        "x6y8": {"shelf":"s0021","group":"magenta","item":"Z1","quantity":5},
-        "x6y9": {"shelf":"s0022","group":"magenta","item":"Z2","quantity":5},
-        "x6y10": {"shelf":"s0023","group":"magenta","item":"Z3","quantity":5},
-        "x6y11": {"shelf":"s0024","group":"magenta","item":"Z4","quantity":5},
-        "x6y12": {"shelf":"s0025","group":"magenta","item":"Z5","quantity":5}
+        "x6y48": {"shelf":"s0001","group":"red","item":"X1","price":2,"quantity":5},
+        "x7y48": {"shelf":"s0002","group":"red","item":"X2","price":3,"quantity":5},
+        "x8y48": {"shelf":"s0003","group":"red","item":"X3","price":4,"quantity":5},
+        "x9y48": {"shelf":"s0004","group":"red","item":"X4","price":5,"quantity":5},
+        "x10y48": {"shelf":"s0005","group":"red","item":"X5","price":6,"quantity":5},
+        "x28y45": {"shelf":"s0011","group":"green","item":"Y1","price":12,"quantity":5},
+        "x29y45": {"shelf":"s0012","group":"green","item":"Y2","price":13,"quantity":5},
+        "x30y45": {"shelf":"s0013","group":"green","item":"Y3","price":14,"quantity":5},
+        "x31y45": {"shelf":"s0014","group":"green","item":"Y4","price":15,"quantity":5},
+        "x32y45": {"shelf":"s0015","group":"green","item":"Y5","price":16,"quantity":5},
+        "x6y8": {"shelf":"s0021","group":"magenta","item":"Z1","price":22,"quantity":5},
+        "x6y9": {"shelf":"s0022","group":"magenta","item":"Z2","price":23,"quantity":5},
+        "x6y10": {"shelf":"s0023","group":"magenta","item":"Z3","price":24,"quantity":5},
+        "x6y11": {"shelf":"s0024","group":"magenta","item":"Z4","price":25,"quantity":5},
+        "x6y12": {"shelf":"s0025","group":"magenta","item":"Z5","price":26,"quantity":5}
     },
 
     "promotions":{

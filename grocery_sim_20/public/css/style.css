@@ -94,7 +94,7 @@ div.radar_box {
   margin-left: auto;
   margin-right: auto;
   /*background: magenta;*/
-  grid-template-columns: 50px 600px 250px;
+  grid-template-columns: 50px 50px 600px 250px;
   grid-template-rows: auto;
   align-items: start;
   border: 2px solid gray;
@@ -104,7 +104,7 @@ div.radar_box {
 
 .center {
   margin: auto;
-  width: 900px;
+  width: 950px;
   padding: 10px;
 }
 

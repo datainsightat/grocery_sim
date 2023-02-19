@@ -13,7 +13,7 @@ let app = {};
 
     this.el = document.getElementById(id);
     this.slist = document.getElementById('shopping-list');
-    
+    this.rlist = document.getElementById('receipt');
     // level addition
     this.level_idx = 0;
     
@@ -54,6 +54,7 @@ let app = {};
     no_items = Math.floor(Math.random() * (max - min + 1) + min);
 
     this.player.shoppinglist = [];
+    this.player.receipt = [];
 
     for (var i = 0; i < no_items; i++) {
       j = Math.floor(Math.random() * (Object.keys(this.shelfs).length - 1 + 1) + 1) - 1;
@@ -173,6 +174,39 @@ let app = {};
   }
 
   /*
+  * Applies the level theme as a class to the game element. 
+  * Populates the map by adding tiles and sprites to their respective layers.
+  */
+  Game.prototype.populateReceipt = function() {
+    
+    // add theme call
+    //this.slist.className = 'shopping-list ' + this.theme;
+
+    // make a reference to the tiles layer in the DOM.
+    let ritems = this.rlist.querySelector('#ritems');
+
+    ritems.innerHTML = ''
+    
+    // set up our loop to populate the grid.
+    for (var i = 0; i < this.player.receipt.length; ++i) {
+
+      let item_object = this.player.receipt[Object.keys(this.player.receipt)[i]]
+      
+      // call the helper function
+      let ritem = this.createEl(0,i,3);
+
+      ritem.setAttribute('id',item_object.item);
+
+      ritem.className += ' see_100';
+
+      ritem.setAttribute('style',ritem.getAttribute('style') + ' background-color:' + item_object.group);
+      ritem.innerHTML = item_object.item
+      // add to layer
+      ritems.appendChild(ritem);
+    }
+  }
+
+  /*
   * Place the player or goal sprite.
   * @param {String} type - either 'player' or 'goal', used by createEl and becomes DOM ID
   */
@@ -224,7 +258,12 @@ let app = {};
 
     for (var i = 0; i < this.player.shoppinglist.length; ++i) {
       // console.log(i,item_store,this.player.shoppinglist[i].item,item_store == this.player.shoppinglist[i].item)
+
       if (item_store == this.player.shoppinglist[i].item) {
+
+        this.player.receipt.push(this.player.shoppinglist[i]);
+        this.populateReceipt();
+
         this.player.shoppinglist.splice(i, 1);
         document.getElementById(item_store).outerHTML = '';
         this.shelfs['x'+x+'y'+y].quantity -= 1;
@@ -811,6 +850,9 @@ let app = {};
     this.item_ctx = draw_radar('#item_canvas');
     this.promotion_ctx = draw_radar('#promotion_canvas');
 
+    // first impression of the store
+    this.perception();
+
   }
 
   /*
@@ -824,6 +866,7 @@ let app = {};
     
     // changing levels
     this.addMazeListener();
+
   }
   
   /*
