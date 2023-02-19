@@ -185,7 +185,7 @@ let app = {};
     // make a reference to the tiles layer in the DOM.
     let ritems = this.rlist.querySelector('#ritems');
 
-    ritems.innerHTML = ''
+    ritems.innerHTML = '';
     
     // set up our loop to populate the grid.
     for (var i = 0; i < this.player.receipt.length; ++i) {
@@ -244,6 +244,12 @@ let app = {};
     
     return sprite;
   }
+
+/*
+####################
+# PERCEPTION LAYER #
+####################
+*/
 
   /*
   * Triggers a collide animation on the player sprite.
@@ -528,6 +534,12 @@ let app = {};
 
   }
 
+/*
+###################
+# PLAYER MOVEMENT #
+###################
+*/
+
   /*
   * Moves the player sprite left.
   */
@@ -552,6 +564,7 @@ let app = {};
       // change colors
       this.perception();
   };
+
   /*
   * Moves the player sprite up.
   */
@@ -572,6 +585,7 @@ let app = {};
     // change colors
     this.perception();
   };
+
   /*
   * Moves the player sprite right.
   */
@@ -593,6 +607,7 @@ let app = {};
       // change colors
       this.perception();
   };
+
   /*
   * Moves player sprite down.
   */
@@ -614,29 +629,37 @@ let app = {};
       // change colors
     this.perception();
   };
+
   /* 
   *  Updates vertical position of player sprite based on object's y coordinates.
   */
   Game.prototype.updateVert = function() { 
       this.player.el.style.top = this.player.y * this.tileDim+ 'px';
   };
+
   /* 
   *  Updates horizontal position of player sprite based on object's x coordinates.
   */  
   Game.prototype.updateHoriz = function() {
       this.player.el.style.left = this.player.x * this.tileDim + 'px'; 
   };
+
   /*
   * Moves player based on keyboard cursor presses.
   */
   Game.prototype.movePlayer = function(event) {
+
       event.preventDefault();
       
-      if (event.keyCode < 37 || event.keyCode > 40) {
+      if ((event.keyCode != 32 && event.keyCode < 37) || event.keyCode > 40) {
         return;
       }
 
-      switch (event.keyCode) { 
+      switch (event.keyCode) {
+        case 32:
+        this.step();
+        break;
+
         case 37:
         this.moveLeft();
         break;
@@ -654,6 +677,7 @@ let app = {};
         break;
       }
   }
+
   /*
   * Check on whether goal has been reached.
   */
@@ -669,6 +693,7 @@ let app = {};
         body.className = '';
       }
   }
+
   /*
   * Changes the level of the game object.
   */
@@ -695,6 +720,26 @@ let app = {};
 
       // make a copy of the level's goal object, since x and y change between levels.
       this.goal = {...level.goal};
+  }
+
+/*
+#############
+# LISTENERS #
+#############
+*/
+
+  /*
+    *  Add keyboard, button, and maze tap listeners
+    */
+  Game.prototype.addListeners = function() {
+    
+    this.keyboardListener();
+    
+    this.buttonListeners();
+    
+    // changing levels
+    this.addMazeListener();
+
   }
 
   /*
@@ -779,7 +824,54 @@ let app = {};
     });
     
   }
+
+/*
+################
+# CONTROL LOOP #
+################
+*/
+
+Game.prototype.step = function() {
+
+  let strategy = 0;
+
+  if (strategy == 0) {;
+    this.strategyRandom();
+  }
+
+}
+
+Game.prototype.strategyRandom = function() {
+
+  keyCode = Math.floor(Math.random() * (40 - 37 + 1) + 37);
+
+  switch (keyCode) { 
+    case 37:
+    this.moveLeft();
+    break;
     
+    case 38:
+    this.moveUp();
+    break;
+
+    case 39:
+    this.moveRight();
+    break;
+      
+    case 40:
+    this.moveDown();
+    break;
+  }
+
+}
+
+
+/*
+#########
+# SETUP #
+#########
+*/
+
   /*
   * Sets the message of the text element.
   * @param {String} msg - The message to be printed.
@@ -855,19 +947,6 @@ let app = {};
 
   }
 
-  /*
-    *  Add keyboard, button, and maze tap listeners
-    */
-  Game.prototype.addListeners = function() {
-    
-    this.keyboardListener();
-    
-    this.buttonListeners();
-    
-    // changing levels
-    this.addMazeListener();
-
-  }
   
   /*
    *  Initialization function called once

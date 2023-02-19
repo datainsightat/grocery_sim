@@ -2,7 +2,7 @@ html, body {
   font-family: Calibri;
   transition: 0.2s ease;
   text-align: center;
-  margin: 0;
+  /* margin: 0; */
   padding: 0;
 }
 
@@ -102,8 +102,22 @@ div.radar_box {
   box-shadow: 10px 10px 5px lightgray;
 }
 
+.grid-movement {
+  display: grid;
+  margin-top: 20px;
+  margin-left: auto;
+  margin-right: auto;
+  /*background: magenta;*/
+  grid-template-columns: 200px 750px;
+  grid-template-rows: auto;
+  align-items: start;
+  border: 2px solid gray;
+  border-radius: 5px;
+  box-shadow: 10px 10px 5px lightgray;
+}
+
 .center {
-  margin: auto;
+  /* margin: auto; */
   width: 950px;
   padding: 10px;
 }
