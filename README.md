@@ -10,6 +10,12 @@ Simulate the dynamics in a grocery store
     https://strikingloo.github.io/reinforcement-learning-beginners
     https://pypi.org/project/pyqlearning/
     !!! https://samyzaf.com/ML/tdf/tdf.html
+    
+### Create image
+
+Get Dockerfile
+
+    $ docker build -t grocery_sim .
 
 ### Setup Docker container
 
