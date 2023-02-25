@@ -49,12 +49,14 @@ let app = {};
     this.goal = {...level.goal};
 
     // generate shoppinglist
-    min = 1;
-    max = 10;
-    no_items = Math.floor(Math.random() * (max - min + 1) + min);
+    let min = 1;
+    let max = 10;
+    let no_items = Math.floor(Math.random() * (max - min + 1) + min);
 
     this.player.shoppinglist = [];
     this.player.receipt = [];
+
+    let j = 0;
 
     for (var i = 0; i < no_items; i++) {
       j = Math.floor(Math.random() * (Object.keys(this.shelfs).length - 1 + 1) + 1) - 1;
@@ -78,6 +80,8 @@ let app = {};
         
     // two class names: one for tile, one or the tile type.
     el.className = type;
+
+    let dim = 0;
 
     if (type==3) {
       dim = this.tileDim * 2;
@@ -256,6 +260,8 @@ let app = {};
   */
   Game.prototype.collide = function(y,x) {
 
+    let item_store = '';
+
     try {
       item_store = this.shelfs['x'+x+'y'+y].item;
     } catch (error) {
@@ -300,7 +306,7 @@ let app = {};
   Game.prototype.perception= function() {
     // Clear radars
 
-    clear_radar = function(ctx) {
+    let clear_radar = function(ctx) {
       ctx.strokeStyle = 'black';
       ctx.lineWidth = 1;
       ctx.clearRect(0,0,100,100);
@@ -312,7 +318,7 @@ let app = {};
       // ctx.fill();
     }
 
-    draw_line = function(ctx,nav_x0,nav_y0,nav_dx,nav_dy,color,width) {
+    let draw_line = function(ctx,nav_x0,nav_y0,nav_dx,nav_dy,color,width) {
       if (color == 'red') {
         ctx.strokeStyle = 'rgba(255,0,0,0.4)';
       } else {
@@ -389,6 +395,8 @@ let app = {};
           break;
         }
     
+        let percive = 0;
+
         if (j > 2) {
           percive = 1
         } else {
@@ -501,12 +509,12 @@ let app = {};
 
     //https://en.wikipedia.org/wiki/Circular_mean
 
-    knowledge_arc = Math.atan2(knowledge_sin / knowledge_sum, knowledge_cos / knowledge_sum);
-    unknown_aisle_arc = Math.atan2(unknown_aisle_sin / unknown_aisle_sum, unknown_aisle_cos / unknown_aisle_sum);
-    aisle_arc = Math.atan2(aisle_sin / aisle_sum, aisle_cos / aisle_sum);
-    group_arc = Math.atan2(group_sin / group_sum, group_cos / group_sum);
-    item_arc = Math.atan2(item_sin / item_sum, item_cos / item_sum);
-    promotion_arc = Math.atan2(promotion_sin / promotion_sum, promotion_cos / promotion_sum);
+    let knowledge_arc = Math.atan2(knowledge_sin / knowledge_sum, knowledge_cos / knowledge_sum);
+    let unknown_aisle_arc = Math.atan2(unknown_aisle_sin / unknown_aisle_sum, unknown_aisle_cos / unknown_aisle_sum);
+    let aisle_arc = Math.atan2(aisle_sin / aisle_sum, aisle_cos / aisle_sum);
+    let group_arc = Math.atan2(group_sin / group_sum, group_cos / group_sum);
+    let item_arc = Math.atan2(item_sin / item_sum, item_cos / item_sum);
+    let promotion_arc = Math.atan2(promotion_sin / promotion_sum, promotion_cos / promotion_sum);
 
     // console.log(aisle_avg);
 
@@ -544,25 +552,26 @@ let app = {};
   * Moves the player sprite left.
   */
   Game.prototype.moveLeft = function() {
-      // if at the boundary, return
-      if (this.player.x == 0) {
-          this.collide();
-          return;
-      }
-      // itentify next tile
-      let nextTile = this.map[this.player.y][this.player.x-1];
-    
-      // if next tile is a wall, add collide effect and return
-      if (nextTile ==1) {
-          this.collide(this.player.y,this.player.x-1);
-          return;
-      }
-      // change coordinates of player object
-      this.player.x -=1;
-      // update location of DOM element
-      this.updateHoriz();
-      // change colors
-      this.perception();
+    // if at the boundary, return
+    if (this.player.x == 0) {
+        this.collide();
+        return;
+    }
+    // itentify next tile
+    let nextTile = this.map[this.player.y][this.player.x-1];
+  
+    // if next tile is a wall, add collide effect and return
+    if (nextTile ==1) {
+        this.collide(this.player.y,this.player.x-1);
+        return;
+    }
+
+    // change coordinates of player object
+    this.player.x -=1;
+    // update location of DOM element
+    this.updateHoriz();
+    // change colors
+    this.perception();
   };
 
   /*
@@ -580,6 +589,7 @@ let app = {};
           this.collide(this.player.y-1,this.player.x);
           return;
     }
+
     this.player.y -=1;
     this.updateVert();
     // change colors
@@ -590,11 +600,13 @@ let app = {};
   * Moves the player sprite right.
   */
   Game.prototype.moveRight = function()  {
+
     if (this.player.x == this.map[this.player.y].length-1) {
           this.collide();
           return;
     }
-    nextTile = this.map[this.player.y][this.player.x+1];
+
+    let nextTile = this.map[this.player.y][this.player.x+1];
           
     if (nextTile ==1) {
           this.collide(this.player.y,this.player.x+1)
@@ -612,6 +624,7 @@ let app = {};
   * Moves player sprite down.
   */
   Game.prototype.moveDown = function()  {
+
     if (this.player.y == this.map.length-1) {
           this.collide(nextTile);
           return;
@@ -623,6 +636,7 @@ let app = {};
           this.collide(this.player.y+1,this.player.x)
           return;
     }
+
     this.player.y += 1;
     this.updateVert();
 
@@ -682,6 +696,7 @@ let app = {};
   * Check on whether goal has been reached.
   */
   Game.prototype.checkGoal = function() {
+
       let body = document.querySelector('body');
     
       if (this.player.y == this.goal.y &&
@@ -722,47 +737,22 @@ let app = {};
       this.goal = {...level.goal};
   }
 
-
-
 /*
 ################
 # CONTROL LOOP #
 ################
 */
 
-Game.prototype.oneStep = function() {
+  Game.prototype.oneStep = function() {
 
-  var e = document.getElementById("strategy");
+    var e = document.getElementById("strategy");
 
-  if (e.value == 'random') {;
-    this.strategyRandom();
+    if (e.value == 'random') {;
+      // this.strategyRandom();
+      strategyRandom(this);
+    }
+
   }
-
-}
-
-Game.prototype.strategyRandom = function() {
-
-  keyCode = Math.floor(Math.random() * (40 - 37 + 1) + 37);
-
-  switch (keyCode) { 
-    case 37:
-    this.moveLeft();
-    break;
-    
-    case 38:
-    this.moveUp();
-    break;
-
-    case 39:
-    this.moveRight();
-    break;
-      
-    case 40:
-    this.moveDown();
-    break;
-  }
-
-}
 
 /*
 #############
@@ -775,133 +765,19 @@ Game.prototype.strategyRandom = function() {
     */
   Game.prototype.addListeners = function() {
     
-    this.keyboardListener();
+    // this.keyboardListener();
+    // let obj1 = this;
+    keyboardListener(this);
     
-    this.buttonListeners();
+    // this.buttonListeners();
+    let obj = this;
+    obj = buttonListeners(obj);
     
     // changing levels
-    this.addMazeListener();
+    // this.addMazeListener();
+    obj = addMazeListener(obj);
 
   }
-
-  /*
-    * If goal has been reached, 
-    */
-  Game.prototype.addMazeListener = function() {
-
-    // grab the map
-
-    let map = this.el.querySelector('.game-map');
-
-    // grab reference to game object since we are going into a function 
-    // and "this" will no longer refer to the game object
-
-    let obj = this;
-
-    // if game board is clicked or tapped, see if we should change levels
-    map.addEventListener('mousedown',function(e) {
-      
-        // if not at the goal, then get outta here
-        if (obj.player.y != obj.goal.y ||
-        obj.player.x != obj.goal.x) {
-          return;
-        }
-        // change level of game object by changing it's properties
-        obj.changeLevel();
-        
-        // get the two layers
-        let layers = obj.el.querySelectorAll('.layer');
-      
-        // clear tiles and sprites from layers
-        for (layer of layers) {
-            layer.innerHTML = '';
-        }
-        
-        // place the new level.
-        obj.placeLevel();
-      
-        // check the goal to reset the message.
-        obj.checkGoal();
-      
-    });
-  };
-
-  /*
-  *  Responds to a keydown event by moving the player and checking the goal.
-  */
-  Game.prototype.keyboardListener = function() {
-    document.addEventListener('keydown', event => {
-        this.movePlayer(event);
-        this.checkGoal();
-    });
-    
-  }
-  /*
-    * Adds mouse down listeners to buttons
-    */
-  Game.prototype.buttonListeners = function() {
-    
-    let up = document.getElementById('up');
-    let left = document.getElementById('left');
-    let down = document.getElementById('down')
-    let right = document.getElementById('right');
-    let sequence = document.getElementById('sequence');
-    
-    // the sprite is out of date
-    let obj = this;
-
-    up.addEventListener('mousedown',function() {
-      obj.moveUp();
-      obj.checkGoal();   
-    });
-
-    down.addEventListener('mousedown',function() {
-      obj.moveDown();
-      obj.checkGoal();   
-    });
-
-    left.addEventListener('mousedown',function() {
-      obj.moveLeft();
-      obj.checkGoal();   
-    });
-
-    right.addEventListener('mousedown',function() {
-      obj.moveRight();
-      obj.checkGoal();   
-    });
-
-    sequence_1.addEventListener('mousedown',function() {
-      for (var i = 0; i < 1; i++) {
-        obj.oneStep();
-      }
-    });
-
-    sequence_10.addEventListener('mousedown',function() {
-      for (var i = 0; i < 10; i++) {
-        obj.oneStep();
-      }
-    });
-
-    sequence_100.addEventListener('mousedown',function() {
-      for (var i = 0; i < 100; i++) {
-        obj.oneStep();
-      }
-    });
-
-    sequence_1000.addEventListener('mousedown',function() {
-      for (var i = 0; i < 1000; i++) {
-        obj.oneStep();
-      }
-    });
-
-    sequence_10000.addEventListener('mousedown',function() {
-      for (var i = 0; i < 10000; i++) {
-        obj.oneStep();
-      }
-    });
-    
-  }
-
 
 /*
 #########
@@ -954,7 +830,7 @@ Game.prototype.strategyRandom = function() {
     // ..so we can store it in the playerSprite element.
     this.player.el = playerSprite;
 
-    draw_radar = function(canvas_name) {
+    let draw_radar = function(canvas_name) {
 
       const canvas = document.querySelector(canvas_name);
 
@@ -962,7 +838,7 @@ Game.prototype.strategyRandom = function() {
         return;
       }
     
-      ctx = canvas.getContext('2d');
+      let ctx = canvas.getContext('2d');
     
       // set line stroke and line width
       ctx.strokeStyle = 'black';
@@ -984,11 +860,12 @@ Game.prototype.strategyRandom = function() {
 
   }
 
-  
   /*
    *  Initialization function called once
    */
   context.init = function () {
+
+    let store_promise = '';
 
     // Read store data from JSON File
     store_promise = fetch('./data/store.json')
@@ -1015,5 +892,8 @@ Game.prototype.strategyRandom = function() {
 /*
  * Tell app to activate the init() function.
  */
+
+import { buttonListeners,keyboardListener,addMazeListener } from './listeners.js';
+import { strategyRandom } from './models/strategyRandom.js';
 
 app.init();
