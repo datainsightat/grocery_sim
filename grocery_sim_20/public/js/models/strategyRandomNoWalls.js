@@ -24,22 +24,20 @@ function strategyRandomNoWalls(obj) {
 
     let i = Math.floor(Math.random() * options.length);
 
-    console.log([options,i,options[i]]);
-
     switch (options[i]) { 
-        case 'n':
+        case 'w':
         obj.moveLeft();
         break;
         
-        case 'e':
+        case 'n':
         obj.moveUp();
         break;
 
-        case 's':
+        case 'e':
         obj.moveRight();
         break;
         
-        case 'w':
+        case 's':
         obj.moveDown();
         break;
     }
