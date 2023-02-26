@@ -66,6 +66,9 @@ div.layer div {
   filter: saturate(50%);
 }
 .see_2 {
+  filter: saturate(75%);
+}
+.see_3 {
   filter: saturate(100%);
 }
 

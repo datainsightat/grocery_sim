@@ -1,26 +1,14 @@
-// Randomly choose any direction
+import { movePlayer } from "../move.js";
 
 function strategyRandom(obj) {
 
-    let keyCode = Math.floor(Math.random() * (40 - 37 + 1) + 37);
+    // get a list of all avialable directions
+    let options = ['n','e','s','w'];
 
-    switch (keyCode) { 
-        case 37:
-        obj.moveLeft();
-        break;
-        
-        case 38:
-        obj.moveUp();
-        break;
+    // pick a random cell of the list of available cells
+    let i = Math.floor(Math.random() * options.length);
 
-        case 39:
-        obj.moveRight();
-        break;
-        
-        case 40:
-        obj.moveDown();
-        break;
-    }
+    movePlayer(obj,options[i]);
 
 };
 

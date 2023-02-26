@@ -1,11 +1,11 @@
 // Randomly choose any direction, but do not crash into walls
 
-import { getOptions,movePlayer } from "../move.js";
+import { getOptionsNoDouble,movePlayer } from "../move.js";
 
-function strategyRandomNoWalls(obj) {
+function strategyRandomNoDouble(obj) {
 
     // which neighbouring cells are free?
-    let options = getOptions(obj);
+    let options = getOptionsNoDouble(obj);
 
     // pick a random cell of the list of available cells
     let i = Math.floor(Math.random() * options.length);
@@ -14,4 +14,4 @@ function strategyRandomNoWalls(obj) {
 
 };
 
-export {strategyRandomNoWalls};
+export {strategyRandomNoDouble};

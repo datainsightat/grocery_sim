@@ -349,6 +349,8 @@ let app = {};
     let y0 = [this.player.y] * 1;
     let x0 = [this.player.x] * 1;
 
+    this.player.knowledge_level[y0][x0] = 3;
+
     let ray_length = 25;
 
     let nav_x0 = 50;
@@ -456,7 +458,7 @@ let app = {};
         // set saturation of tile
 
         //console.log(tile.classList);
-        tile.classList.remove('see_0','see_1','see_2');
+        tile.classList.remove('see_0','see_1','see_2','see_3');
         tile.className += ' see_'.concat(this.player.knowledge_level[y][x]);
 
         // If shelf hight > 1 then stop ray
@@ -787,6 +789,14 @@ let app = {};
       strategyRandomNoWalls(this);
     }
 
+    if (e.value == 'random_no_double') {
+      strategyRandomNoDouble(this);
+    }
+
+    if (e.value == 'random_increase_2') {
+      strategyRandomIncrease2(this);
+    }
+
   }
 
 /*
@@ -931,5 +941,7 @@ let app = {};
 import { buttonListeners,keyboardListener,addMazeListener } from './listeners.js';
 import { strategyRandom } from './models/strategyRandom.js';
 import { strategyRandomNoWalls } from './models/strategyRandomNoWalls.js';
+import { strategyRandomNoDouble } from './models/strategyRandomNoDouble.js';
+import { strategyRandomIncrease2 } from './models/strategyRandomIncrease2.js';
 
 app.init();
