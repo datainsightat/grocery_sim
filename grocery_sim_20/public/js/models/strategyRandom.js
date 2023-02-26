@@ -1,3 +1,5 @@
+// Randomly choose any direction
+
 function strategyRandom(obj) {
 
     let keyCode = Math.floor(Math.random() * (40 - 37 + 1) + 37);

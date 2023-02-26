@@ -41,7 +41,13 @@ let app = {};
     for (var i = 0; i < this.player.knowledge_level.length; i++) {
       this.player.knowledge_level[i] = new Array(this.map[0].length).fill(0);
     }
-    
+
+    // initlialize player perception
+    this.player.perception = {};
+
+    // Memory steps;
+    this.player.memory = 3;
+
     // create a property for the DOM element, to be set later.
     this.player.el = null;
     
@@ -370,6 +376,8 @@ let app = {};
 
     let rays = 8
 
+    let percive_step = {};
+
     for (let i = (2 * Math.PI / rays); i <= 2 * Math.PI; i += (2 * Math.PI / rays)) {
 
       let knowledge_score = 0;
@@ -505,7 +513,31 @@ let app = {};
       item_sum += item_score;
       promotion_sum += promotion_score;
 
+      // Update perception object
+
+      percive_step[[i]] = 
+        {
+        'knowledge':knowledge_score
+        ,'unknown_aisle':unknown_aisle_score
+        ,'aisle':aisle_score
+        ,'group':group_score
+        ,'item':item_score
+        ,'promotion':promotion_score};
+
     }
+
+    // console.log(percive_step);
+
+    for (let i = 0; i < this.player.memory; i++) {
+      // console.log([this.player.memory-i,this.player.memory-i-1]);
+      this.player.perception[this.player.memory-i] = this.player.perception[this.player.memory-i-1];
+    }
+
+    this.player.perception[0] = percive_step;
+
+    // console.log(this.player.perception);
+
+    // console.log(this.player.perception);
 
     //https://en.wikipedia.org/wiki/Circular_mean
 
@@ -747,9 +779,12 @@ let app = {};
 
     var e = document.getElementById("strategy");
 
-    if (e.value == 'random') {;
-      // this.strategyRandom();
+    if (e.value == 'random') {
       strategyRandom(this);
+    }
+
+    if (e.value == 'random_no_walls') {
+      strategyRandomNoWalls(this);
     }
 
   }
@@ -895,5 +930,6 @@ let app = {};
 
 import { buttonListeners,keyboardListener,addMazeListener } from './listeners.js';
 import { strategyRandom } from './models/strategyRandom.js';
+import { strategyRandomNoWalls } from './models/strategyRandomNoWalls.js';
 
 app.init();
