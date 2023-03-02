@@ -7,7 +7,8 @@ FROM ubuntu:20.04
 ENV NODE_VERSION=16.13.0
 ENV NVM_DIR=/root/.nvm
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-ENV PATH /opt/conda/bin:$PATH
+ENV PATH="/opt/conda/bin:$PATH"
+ARG PATH="/opt/conda/bin:$PATH"
 
 ###########
 # General #
@@ -24,11 +25,11 @@ RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
 RUN chmod +x Miniconda3-latest-Linux-x86_64.sh
 RUN bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda
 
-RUN conda create -n grocery_sim python=3.8
 RUN conda init bash
-# RUN conda activate grocery_sim
+RUN conda create -n grocery_sim python=3.8
+RUN conda activate grocery_sim
 
-RUN echo "conda activate grocery_sim" > ~/.bashrc
+# RUN echo "conda activate grocery_sim" > ~/.bashrc
 
 ########
 # NODE #
