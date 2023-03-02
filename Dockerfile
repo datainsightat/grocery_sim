@@ -7,29 +7,22 @@ FROM ubuntu:20.04
 ENV NODE_VERSION=16.13.0
 ENV NVM_DIR=/root/.nvm
 ENV PATH="/root/.nvm/versions/node/v${NODE_VERSION}/bin/:${PATH}"
-ENV PATH="/opt/conda/bin:$PATH"
-ARG PATH="/opt/conda/bin:$PATH"
 
 ###########
 # General #
 ###########
 
 RUN apt-get update && \
-    apt-get install -y curl wget git
+    apt-get install -y curl wget git virtualenv python3-pip python3.8-dev
+    # python3.8-distutils python3.8-venv
 
-#########
-# CONDA #
-#########
+######################
+# Create Environment #
+######################
 
-RUN wget https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh
-RUN chmod +x Miniconda3-latest-Linux-x86_64.sh
-RUN bash Miniconda3-latest-Linux-x86_64.sh -b -p /opt/conda
-
-RUN conda init bash
-RUN conda create -n grocery_sim python=3.8
-RUN conda activate grocery_sim
-
-# RUN echo "conda activate grocery_sim" > ~/.bashrc
+RUN cd /opt
+RUN virtualenv --python=python3.8 env
+#RUN source env/bin/activate
 
 ########
 # NODE #
