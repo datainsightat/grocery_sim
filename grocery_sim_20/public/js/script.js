@@ -439,13 +439,37 @@ let app = {};
 
         // If Agent sees group
         if (this.shelfs['x'+x+'y'+y]) {
+
+
           // Agent sees group
           if (this.player.knowledge_level[y][x] > 0) {
-            group_score += 1;
+
+            let key = '';
+
+            // Check, if group is in shopping list
+            for (key in Object.keys(this.player.shoppinglist)) {
+
+              if (this.shelfs['x'+x+'y'+y].group == this.player.shoppinglist[key].group) {
+                group_score += 1;
+                break;
+              }
+            }
+
           }
           // Agent sees item
           if (this.player.knowledge_level[y][x] > 1) {
-            item_score += 1;
+
+            let key = '';
+            
+            //Check, if item is in shoppinglist
+            for (key in Object.keys(this.player.shoppinglist)) {
+              
+              if (this.shelfs['x'+x+'y'+y].item == this.player.shoppinglist[key].item) {
+                item_score += 1;
+                break;
+              }
+            }
+
             tile.innerHTML = this.shelfs['x'+x+'y'+y].item;
             // if item is promoted
             if (this.promotions[this.shelfs['x'+x+'y'+y].item]) {
