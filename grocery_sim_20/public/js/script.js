@@ -463,7 +463,7 @@ let app = {};
             
             //Check, if item is in shoppinglist
             for (key in Object.keys(this.player.shoppinglist)) {
-              
+
               if (this.shelfs['x'+x+'y'+y].item == this.player.shoppinglist[key].item) {
                 item_score += 1;
                 break;
@@ -821,6 +821,10 @@ let app = {};
       strategyRandomIncrease2(this);
     }
 
+    if (e.value == 'bfs') {
+      strategyBFS(this);
+    }
+
   }
 
 /*
@@ -967,5 +971,6 @@ import { strategyRandom } from './models/strategyRandom.js';
 import { strategyRandomNoWalls } from './models/strategyRandomNoWalls.js';
 import { strategyRandomNoDouble } from './models/strategyRandomNoDouble.js';
 import { strategyRandomIncrease2 } from './models/strategyRandomIncrease2.js';
+import { strategyBFS } from './models/strategyBFS.js';
 
 app.init();
