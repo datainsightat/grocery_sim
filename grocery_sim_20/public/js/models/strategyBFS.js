@@ -40,26 +40,30 @@ function strategyBFS(obj) {
     
     d = {1:(obj.player.y,obj.player.x)};
 
-    let path_length = 2
+    let path_length = 2;
 
     // while path_length < 401 and d[path_length-1]:
     //     # Fill fringe
-    //     fringe = set()
+        fringe = set();
 
-    //     for x in d[path_length-1]:
+        for (x in d[path_length-1]) {
 
-    //         expand_x = {y for y in neighbors(x,map_) if not any(y in visited for visited in d.values())}
-    //         fringe = fringe | expand_x
+            expand_x = {y for y in neighbors(x,map_)}; // if not any(y in visited for visited in d.values())}
+            fringe = fringe | expand_x;
+
+            // Have we found min path of exit node?
+            if (dest.x, dest.y) in fringe {
+
+                return path_length;
             
-    //     # Have we found min path of exit node?
-    //     if (dest.x, dest.y) in fringe:
+            }
 
-    //         return path_length
+        }
         
-    //     # Store new fring of minimal-path nodes
-    //     d[path_length] = fringe
-    //     # Find nodes with next-higher path_length
-    //     path_length += 1
+        // Store new fring of minimal-path nodes
+        d[path_length] = fringe;
+        // Find nodes with next-higher path_length
+        path_length += 1;
 
     // return 401 # Infinite path length
 
