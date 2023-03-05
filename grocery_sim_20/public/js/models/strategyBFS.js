@@ -2,72 +2,122 @@ import { movePlayer } from "../move.js";
 
 function strategyBFS(obj) {
 
-    console.log('BFS')
-
-    function getOptions() {
+    function getOptions(obj,y,x) {
 
         let options = [];
 
         // get all neighbouring cells
 
-        if (obj.map[obj.player.y-1][obj.player.x] == 0) { // & (obj.player.knowledge_level[obj.player.y-1][obj.player.x] != 3)) {
-            options.push(obj.player.y-1,obj.player.x);
+        if (obj.map[y-1][x] == 0) { // & (obj.player.knowledge_level[obj.player.y-1][obj.player.x] != 3)) {
+            options.push([y-1,x]);
         }
     
-        if (obj.map[obj.player.y][obj.player.x+1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x+1] != 3)) {
-            options.push(obj.player.y,obj.player.x+1);
+        if (obj.map[y][x+1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x+1] != 3)) {
+            options.push([y,x+1]);
         }
     
-        if (obj.map[obj.player.y+1][obj.player.x] == 0) { //  & (obj.player.knowledge_level[obj.player.y+1][obj.player.x] != 3)) {
-            options.push(obj.player.y+1,obj.player.x);
+        if (obj.map[y+1][x] == 0) { //  & (obj.player.knowledge_level[obj.player.y+1][obj.player.x] != 3)) {
+            options.push([y+1,x]);
         }
     
-        if (obj.map[obj.player.y][obj.player.x-1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x-1] != 3)) {
-            options.push(obj.player.y,obj.player.x-1);
+        if (obj.map[y][x-1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x-1] != 3)) {
+            options.push([y,x-1]);
         }
 
         return options;
     }
 
     // get a list of all avialable directions
-    let options = getOptions(obj);
+    // let options = getOptions(obj,y,x);
+    let i = 0;
+    let paths = {};
+    paths[i] = [[obj.player.y,obj.player.x]];
+    i += 1;
+    let options = [];
 
-    console.log(options);
+    for (var path in Object.keys(paths)) {
+        //get neighbours of last item in path
+        // console.log(paths[path]);
 
-    let d = {};
+        var key = Object.keys(paths)[path];
+
+        options = getOptions(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
+
+        for (var option in options) {
+
+            // path_tmp = paths[path].push(options[option]);
+            paths[i] = [...paths[key]];
+            paths[i].push(options[option]);
+            i += 1;
+            // console.log(option,'a',options[option],'b',paths[path],'c',path_tmp);
+        }
+        delete paths[key];
+    }
+
+    console.log(paths);
+    // console.log(Object.keys(paths));
+
+    // for (var path in Object.keys(paths)) {
+    //     //get neighbours of last item in path
+    //     var key = Object.keys(paths)[path];
+
+    //     options = getOptions(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
+
+    //     for (var option in options) {
+
+    //         // path_tmp = paths[path].push(options[option]);
+    //         paths[i] = [...paths[key]];
+    //         paths[i].push(options[option]);
+    //         i += 1;
+    //         // console.log(option,'a',options[option],'b',paths[path],'c',path_tmp);
+    //     }
+    //     delete paths[key];
+    // }
+
+    // console.log(paths);
 
     // def min_path_precise(map_, src, dest, COL, ROW):
     
-    d = {1:(obj.player.y,obj.player.x)};
+    // d = {1:(obj.player.y,obj.player.x)};
 
-    let path_length = 2;
+    // let start = (obj.player.y,obj.player.x);
 
-    // while path_length < 401 and d[path_length-1]:
-    //     # Fill fringe
-        fringe = set();
+    // //A Queue to manage the nodes that have yet to be visited
+    // var queue = [];
+    // //Adding the node to start from
+    // queue.push(start);
+    // //A boolean array indicating whether we have already visited a node
+    // var visited = [];
+    // //(The start node is already visited)
+    // visited[start] = true;
+    // // Keeping the distances (might not be necessary depending on your use case)
+    // var distances = []; // No need to set initial values since every node is visted exactly once
+    // //(the distance to the start node is 0)
+    // distances[start] = 0;
 
-        for (x in d[path_length-1]) {
+    // //While there are nodes left to visit...
+    // while (queue.length > 0) {
+    //     console.log("Visited nodes: " + visited);
+    //     console.log("Distances: " + distances);
+    //     var node = queue.shift();
+    //     console.log("Removing node " + node + " from the queue...");
+    //     //...for all neighboring nodes that haven't been visited yet....
+    //     for (var i = 1; i < graph[node].length; i++) {
+    //         if (graph[node][i] && !visited[i]) {
+    //             // Do whatever you want to do with the node here.
+    //             // Visit it, set the distance and add it to the queue
+    //             visited[i] = true;
+    //             distances[i] = distances[node] + 1;
+    //             queue.push(i);
+    //             console.log("Visiting node " + i + ", setting its distance to " + distances[i] + " and adding it to the queue");
 
-            expand_x = {y for y in neighbors(x,map_)}; // if not any(y in visited for visited in d.values())}
-            fringe = fringe | expand_x;
+    //         }
+    //     }
+    // }
+    // console.log("No more nodes in the queue. Distances: " + distances);
+    // return distances;
 
-            // Have we found min path of exit node?
-            if (dest.x, dest.y) in fringe {
-
-                return path_length;
-            
-            }
-
-        }
-        
-        // Store new fring of minimal-path nodes
-        d[path_length] = fringe;
-        // Find nodes with next-higher path_length
-        path_length += 1;
-
-    // return 401 # Infinite path length
-
-    movePlayer(obj,options[i]);
+    // movePlayer(obj,options[i]);
 
 };
 
