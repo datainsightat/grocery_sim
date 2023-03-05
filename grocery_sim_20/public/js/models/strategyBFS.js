@@ -35,26 +35,35 @@ function strategyBFS(obj) {
     i += 1;
     let options = [];
 
-    for (var path in Object.keys(paths)) {
-        //get neighbours of last item in path
-        // console.log(paths[path]);
+    for (let n=0;n<=3;n++) {
 
-        var key = Object.keys(paths)[path];
+        let keys = JSON.parse(JSON.stringify(Object.keys(paths)));
 
-        options = getOptions(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
+        for (var k in keys) {
+            //get neighbours of last item in path
+            // console.log(paths[path]);
+    
+            var key = keys[k];
+    
+            options = getOptions(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
+    
+            for (var option in options) {
+    
+                // path_tmp = paths[path].push(options[option]);
+                paths[i] = JSON.parse(JSON.stringify(paths[key]));//[...paths[key]];
+                paths[i].push(JSON.parse(JSON.stringify(options[option])));//options[option]);
+                i += 1;
+                // console.log(option,'a',options[option],'b',paths[path],'c',path_tmp);
+            }
+            delete paths[key];
 
-        for (var option in options) {
-
-            // path_tmp = paths[path].push(options[option]);
-            paths[i] = [...paths[key]];
-            paths[i].push(options[option]);
-            i += 1;
-            // console.log(option,'a',options[option],'b',paths[path],'c',path_tmp);
         }
-        delete paths[key];
+
     }
 
-    console.log(paths);
+    console.log(key,JSON.parse(JSON.stringify(paths)));
+
+    // console.log(paths);
     // console.log(Object.keys(paths));
 
     // for (var path in Object.keys(paths)) {
