@@ -28,8 +28,8 @@ Get Dockerfile
 copy ssh key to dockerhub
 
     grocery_sim$ git clone git@github.com:datainsightat/grocery_sim.git
-    grocery_sim$ cd grocery_sim/grocery_sim_20
+    grocery_sim$ cd grocery_sim
 
 ### Run App
 
-    grocery_sim$ node server.js
+    grocery_sim$ node grocery_sim_20/server.js
