@@ -2,12 +2,12 @@ import { movePlayer } from "../move.js";
 
 function strategyBFS(obj) {
 
-    function getOptions(obj,y,x) {
+    function getOptions_xy(obj,y,x) {
 
         let options = [];
-
+    
         // get all neighbouring cells
-
+    
         if (obj.map[y-1][x] == 0) { // & (obj.player.knowledge_level[obj.player.y-1][obj.player.x] != 3)) {
             options.push([y-1,x]);
         }
@@ -23,9 +23,9 @@ function strategyBFS(obj) {
         if (obj.map[y][x-1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x-1] != 3)) {
             options.push([y,x-1]);
         }
-
+    
         return options;
-    }
+    };
 
     function searchPath(obj) {
 
@@ -45,7 +45,7 @@ function strategyBFS(obj) {
 
                 var key = keys[k];
         
-                options = getOptions(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
+                options = getOptions_xy(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
         
                 for (var option in options) {
     

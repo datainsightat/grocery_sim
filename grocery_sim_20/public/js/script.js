@@ -825,6 +825,10 @@ let app = {};
       strategyBFS(this);
     }
 
+    if (e.value == 'ri2b') {
+      strategyRI2B(this);
+    }
+
   }
 
 /*
@@ -972,5 +976,6 @@ import { strategyRandomNoWalls } from './models/strategyRandomNoWalls.js';
 import { strategyRandomNoDouble } from './models/strategyRandomNoDouble.js';
 import { strategyRandomIncrease2 } from './models/strategyRandomIncrease2.js';
 import { strategyBFS } from './models/strategyBFS.js';
+import { strategyRI2B } from './models/strategyRI2B.js';
 
 app.init();
