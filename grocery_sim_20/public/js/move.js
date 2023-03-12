@@ -90,6 +90,8 @@ function movePlayer(obj,direction) {
         break;
     }
 
+    //Update Perception
+
 }
 
 export {getOptions,getOptionsNoDouble,movePlayer};

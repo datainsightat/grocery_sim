@@ -39,7 +39,7 @@ function strategyRI2B(obj) {
     
         // Sometimes, to a random step
         if (Math.random() < 0.1) {
-            console.log('random');
+            // console.log('random');
             options = getOptions(obj);
         }
     
@@ -101,7 +101,7 @@ function strategyRI2B(obj) {
                 for (var option in options) {
     
                     if (options[option].slice(0,2).join(',') == goal.join(',')) {
-                        console.log ('Goal found')
+                        // console.log ('Goal found')
                         let solution = JSON.parse(JSON.stringify(paths[key]));
                         solution.push(JSON.parse(JSON.stringify(options[option])));
                         return solution;
@@ -125,12 +125,21 @@ function strategyRI2B(obj) {
         return 0;
     }
 
+    function moveStep(obj) {
+        // console.log(obj.player.path);
+        //move to next cell
+        movePlayer(obj,obj.player.path[0][2]);
+        //remove first item
+        obj.player.path.shift();
+    }
+
     // console.log(obj.player.perception);
 
     // If player does not see color, searach random, else go to color
 
     let keys = JSON.parse(JSON.stringify(Object.keys(obj.player.perception[0])));
     let color = false;
+    let item = false;
     
     for (var k in keys) {
 
@@ -140,53 +149,124 @@ function strategyRI2B(obj) {
             color = true;
         }
 
+        if (obj.player.perception[0][key].item > 0) {
+            item = true;
+        }
+
     }
 
+    // Is the player currently following a path?
+    if (obj.player.path.length > 0) {
 
-    if (color) {
-        console.log('color');
-        // console.log(obj.player.perception);
-
-        // Get paths to all colors
-        let keys = JSON.parse(JSON.stringify(Object.keys(obj.player.perception[0])));
-        var path = [];
-
-        for (var k in keys) {
-    
-            var key = keys[k];
-            var xy = [];
-
-            if (obj.player.perception[0][key].group_xy.length > 0) {
-                xy = obj.player.perception[0][key].group_xy[0].split('x')[1].split('y');
-                // console.log(obj.player.perception[0][key].group_xy);
-                // console.log(xy);
-
-                // Select shortest Path
-                if (path.length == 0 || searchPath(obj,xy).length < path.length) {
-                    path = searchPath(obj,xy);
-                }
-
-            }
-    
-        }
-
-        // console.log(path);
-
-        //Remove current place and last element of array
-        path.shift();
-        path.pop();
-
-        //Move Agent to goal step
-        if (path) {
-            for (var step in path) {
-                movePlayer(obj,path[step][2]);
-            }
-        }
+        //move to next cell
+        moveStep(obj);
 
     } else {
-        console.log('random');
-        strategyRandomIncrease2(obj);
+
+        // Has the player got all items?
+
+        // console.log(obj.player.shoppinglist);
+
+        if (obj.player.shoppinglist.length == 0) {
+            //Finas path to exit
+            path = searchPath(obj,[obj.goal.x,obj.goal.y]);
+
+            //Remove current place and last element of array
+            path.shift();
+
+            obj.player.path = path;
+
+            if (obj.player.path.length > 0) {
+                //move to next cell
+                moveStep(obj);
+            }
+
+        } else if (item) {
+
+            // console.log('item');
+            // console.log(obj.player.perception);
+    
+            // Get paths to all colors
+            let keys = JSON.parse(JSON.stringify(Object.keys(obj.player.perception[0])));
+            var path = [];
+    
+            for (var k in keys) {
+        
+                var key = keys[k];
+                var xy = [];
+    
+                if (obj.player.perception[0][key].item_xy.length > 0) {
+                    xy = obj.player.perception[0][key].item_xy[0].split('x')[1].split('y');
+                    // console.log(obj.player.perception[0][key].group_xy);
+                    // console.log(xy);
+    
+                    // Select shortest Path
+                    if (path.length == 0 || searchPath(obj,xy).length < path.length) {
+                        path = searchPath(obj,xy);
+                    }
+    
+                }
+        
+            }
+
+            //Remove current place and last element of array
+            path.shift();
+
+            obj.player.path = path;
+
+            if (obj.player.path.length > 0) {
+                //move to next cell
+                moveStep(obj);
+            }
+
+        } else if (color) {
+
+            // console.log('color');
+            // console.log(obj.player.perception);
+    
+            // Get paths to all colors
+            let keys = JSON.parse(JSON.stringify(Object.keys(obj.player.perception[0])));
+            var path = [];
+    
+            for (var k in keys) {
+        
+                var key = keys[k];
+                var xy = [];
+    
+                if (obj.player.perception[0][key].group_xy.length > 0) {
+                    xy = obj.player.perception[0][key].group_xy[0].split('x')[1].split('y');
+                    // console.log(obj.player.perception[0][key].group_xy);
+                    // console.log(xy);
+    
+                    // Select shortest Path
+                    if (path.length == 0 || searchPath(obj,xy).length < path.length) {
+                        path = searchPath(obj,xy);
+                    }
+    
+                }
+        
+            }
+
+            //Remove current place and last element of array
+            path.shift();
+            path.pop();
+
+            obj.player.path = path;
+
+            if (obj.player.path.length > 0) {
+                //move to next cell
+                moveStep(obj);
+            }
+
+        } else {
+            // console.log('random');
+            strategyRandomIncrease2(obj);
+        }
+
     }
+
+
+
 
     // let solution = searchPath(obj);
 
