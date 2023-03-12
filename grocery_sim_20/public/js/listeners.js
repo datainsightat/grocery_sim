@@ -52,7 +52,7 @@ function buttonListeners(obj) {
     sequence_10.addEventListener('mousedown',function() {
       for (var i = 0; i < 10; i++) {
         obj.oneStep();
-        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x) {
+        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x & obj.player.shoppinglist.length == 0) {
           return;
         }
       }
@@ -61,7 +61,7 @@ function buttonListeners(obj) {
     sequence_100.addEventListener('mousedown',function() {
       for (var i = 0; i < 100; i++) {
         obj.oneStep();
-        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x) {
+        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x & obj.player.shoppinglist.length == 0) {
           return;
         }
       }
@@ -70,7 +70,7 @@ function buttonListeners(obj) {
     sequence_1000.addEventListener('mousedown',function() {
       for (var i = 0; i < 1000; i++) {
         obj.oneStep();
-        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x) {
+        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x & obj.player.shoppinglist.length == 0) {
           return;
         }
       }
@@ -79,7 +79,7 @@ function buttonListeners(obj) {
     sequence_10000.addEventListener('mousedown',function() {
       for (var i = 0; i < 10000; i++) {
         obj.oneStep();
-        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x) {
+        if (obj.player.y == obj.goal.y & obj.player.x == obj.goal.x & obj.player.shoppinglist.length == 0) {
           return;
         }
       }
