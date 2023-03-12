@@ -59,19 +59,19 @@ function strategyRI2B(obj) {
         // if ([y+1,x].join(',') == goal.join(',')) {console.log([y-1,x],goal)};
     
         if ((obj.map[y-1][x] == 0) || ([y-1,x].join(',') == goal.join(','))) { // & (obj.player.knowledge_level[obj.player.y-1][obj.player.x] != 3)) {
-            options.push([y-1,x]);
+            options.push([y-1,x,'n']);
         }
     
         if ((obj.map[y][x+1] == 0) || ([y,x+1].join(',') == goal.join(','))) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x+1] != 3)) {
-            options.push([y,x+1]);
+            options.push([y,x+1,'e']);
         }
     
         if ((obj.map[y+1][x] == 0) || ([y+1,x].join(',') == goal.join(','))) { //  & (obj.player.knowledge_level[obj.player.y+1][obj.player.x] != 3)) {
-            options.push([y+1,x]);
+            options.push([y+1,x,'s']);
         }
     
         if ((obj.map[y][x-1] == 0) || ([y,x-1].join(',') == goal.join(','))) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x-1] != 3)) {
-            options.push([y,x-1]);
+            options.push([y,x-1,'w']);
         }
     
         return options;
@@ -100,7 +100,7 @@ function strategyRI2B(obj) {
         
                 for (var option in options) {
     
-                    if (options[option].join(',') == goal.join(',')) {
+                    if (options[option].slice(0,2).join(',') == goal.join(',')) {
                         console.log ('Goal found')
                         let solution = JSON.parse(JSON.stringify(paths[key]));
                         solution.push(JSON.parse(JSON.stringify(options[option])));
@@ -160,6 +160,8 @@ function strategyRI2B(obj) {
                 xy = obj.player.perception[0][key].group_xy[0].split('x')[1].split('y');
                 // console.log(obj.player.perception[0][key].group_xy);
                 // console.log(xy);
+
+                // Select shortest Path
                 if (path.length == 0 || searchPath(obj,xy).length < path.length) {
                     path = searchPath(obj,xy);
                 }
@@ -168,7 +170,18 @@ function strategyRI2B(obj) {
     
         }
 
-        console.log(path);
+        // console.log(path);
+
+        //Remove current place and last element of array
+        path.shift();
+        path.pop();
+
+        //Move Agent to goal step
+        if (path) {
+            for (var step in path) {
+                movePlayer(obj,path[step][2]);
+            }
+        }
 
     } else {
         console.log('random');
