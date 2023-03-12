@@ -34,7 +34,7 @@ function strategyRI2B(obj) {
         // Avoid cells where the player has already been
     
         if (options.length == 0) {
-                options = getOptionsNoDouble(obj);
+            options = getOptionsNoDouble(obj);
         }
     
         // Sometimes, to a random step
@@ -50,37 +50,40 @@ function strategyRI2B(obj) {
     
     };
 
-    function getOptions_xy(obj,y,x) {
+    function getOptions_xy(obj,y,x,goal) {
 
         let options = [];
     
         // get all neighbouring cells
+        // console.log([y,x],goal);
+        // if ([y+1,x].join(',') == goal.join(',')) {console.log([y-1,x],goal)};
     
-        if (obj.map[y-1][x] == 0) { // & (obj.player.knowledge_level[obj.player.y-1][obj.player.x] != 3)) {
+        if ((obj.map[y-1][x] == 0) || ([y-1,x].join(',') == goal.join(','))) { // & (obj.player.knowledge_level[obj.player.y-1][obj.player.x] != 3)) {
             options.push([y-1,x]);
         }
     
-        if (obj.map[y][x+1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x+1] != 3)) {
+        if ((obj.map[y][x+1] == 0) || ([y,x+1].join(',') == goal.join(','))) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x+1] != 3)) {
             options.push([y,x+1]);
         }
     
-        if (obj.map[y+1][x] == 0) { //  & (obj.player.knowledge_level[obj.player.y+1][obj.player.x] != 3)) {
+        if ((obj.map[y+1][x] == 0) || ([y+1,x].join(',') == goal.join(','))) { //  & (obj.player.knowledge_level[obj.player.y+1][obj.player.x] != 3)) {
             options.push([y+1,x]);
         }
     
-        if (obj.map[y][x-1] == 0) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x-1] != 3)) {
+        if ((obj.map[y][x-1] == 0) || ([y,x-1].join(',') == goal.join(','))) { //  & (obj.player.knowledge_level[obj.player.y][obj.player.x-1] != 3)) {
             options.push([y,x-1]);
         }
     
         return options;
     };
 
-    function searchPath(obj) {
+    function searchPath(obj,xy) {
 
         let i = 0;
         let paths = {};
         paths[i] = [[obj.player.y,obj.player.x]];
-        let goal = [obj.goal.y,obj.goal.x];
+        let goal = [Number(xy[1]),Number(xy[0])]; //[obj.goal.y,obj.goal.x];
+        // console.log([obj.goal.y,obj.goal.x],goal);
         i += 1;
         let options = [];
         let visited = ['y'+obj.player.y+'x'+obj.player.x];
@@ -93,7 +96,7 @@ function strategyRI2B(obj) {
 
                 var key = keys[k];
         
-                options = getOptions_xy(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1]);
+                options = getOptions_xy(obj,paths[key][paths[key].length-1][0],paths[key][paths[key].length-1][1],goal);
         
                 for (var option in options) {
     
@@ -139,9 +142,33 @@ function strategyRI2B(obj) {
 
     }
 
-    
+
     if (color) {
         console.log('color');
+        // console.log(obj.player.perception);
+
+        // Get paths to all colors
+        let keys = JSON.parse(JSON.stringify(Object.keys(obj.player.perception[0])));
+        var path = [];
+
+        for (var k in keys) {
+    
+            var key = keys[k];
+            var xy = [];
+
+            if (obj.player.perception[0][key].group_xy.length > 0) {
+                xy = obj.player.perception[0][key].group_xy[0].split('x')[1].split('y');
+                // console.log(obj.player.perception[0][key].group_xy);
+                // console.log(xy);
+                if (path.length == 0 || searchPath(obj,xy).length < path.length) {
+                    path = searchPath(obj,xy);
+                }
+
+            }
+    
+        }
+
+        console.log(path);
 
     } else {
         console.log('random');

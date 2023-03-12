@@ -386,7 +386,9 @@ let app = {};
       let unknown_aisle_score = 0;
       let aisle_score = 0;
       let group_score = 0;
+      let group_score_xy = [];
       let item_score = 0;
+      let item_score_xy = [];
       let promotion_score = 0;
 
       let view_blocked = false;
@@ -451,6 +453,7 @@ let app = {};
 
               if (this.shelfs['x'+x+'y'+y].group == this.player.shoppinglist[key].group) {
                 group_score += 1;
+                group_score_xy = ['x'+x+'y'+y];
                 break;
               }
             }
@@ -466,6 +469,7 @@ let app = {};
 
               if (this.shelfs['x'+x+'y'+y].item == this.player.shoppinglist[key].item) {
                 item_score += 1;
+                item_score_xy = ['x'+x+'y'+y];
                 break;
               }
             }
@@ -547,7 +551,9 @@ let app = {};
         ,'unknown_aisle':unknown_aisle_score
         ,'aisle':aisle_score
         ,'group':group_score
+        ,'group_xy':group_score_xy
         ,'item':item_score
+        ,'item_xy':item_score_xy
         ,'promotion':promotion_score};
 
     }
