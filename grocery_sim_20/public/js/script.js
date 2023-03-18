@@ -544,6 +544,10 @@ let app = {};
       strategyRI2B(this);
     }
 
+    if (e.value == 'gpt4_1') {
+      strategyGPT4ScanStore(this);
+    }
+
   }
 
 /*
@@ -695,5 +699,6 @@ import { strategyRandomNoDouble } from './models/strategyRandomNoDouble.js';
 import { strategyRandomIncrease2 } from './models/strategyRandomIncrease2.js';
 import { strategyBFS } from './models/strategyBFS.js';
 import { strategyRI2B } from './models/strategyRI2B.js';
+import { strategyGPT4ScanStore } from './models/strategyGPT4ScanStore.js';
 
 app.init();

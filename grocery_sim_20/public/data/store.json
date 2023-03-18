@@ -2,10 +2,7 @@
     "map":[
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
-        [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1],
+        [1, 1, 1, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
         [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1],
         [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1],
         [1, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1, 0, 0, 0, 1, 1],
@@ -66,21 +63,21 @@
     ],
 
     "shelfs":{
-        "x6y49": {"shelf":"s0001","group":"red","item":"X1","price":2,"quantity":5},
-        "x7y49": {"shelf":"s0002","group":"red","item":"X2","price":3,"quantity":5},
-        "x8y49": {"shelf":"s0003","group":"red","item":"X3","price":4,"quantity":5},
-        "x9y49": {"shelf":"s0004","group":"red","item":"X4","price":5,"quantity":5},
-        "x10y49": {"shelf":"s0005","group":"red","item":"X5","price":6,"quantity":5},
-        "x28y46": {"shelf":"s0011","group":"green","item":"Y1","price":12,"quantity":5},
-        "x29y46": {"shelf":"s0012","group":"green","item":"Y2","price":13,"quantity":5},
-        "x30y46": {"shelf":"s0013","group":"green","item":"Y3","price":14,"quantity":5},
-        "x31y46": {"shelf":"s0014","group":"green","item":"Y4","price":15,"quantity":5},
-        "x32y46": {"shelf":"s0015","group":"green","item":"Y5","price":16,"quantity":5},
-        "x6y9": {"shelf":"s0021","group":"magenta","item":"Z1","price":22,"quantity":5},
-        "x6y10": {"shelf":"s0022","group":"magenta","item":"Z2","price":23,"quantity":5},
-        "x6y11": {"shelf":"s0023","group":"magenta","item":"Z3","price":24,"quantity":5},
-        "x6y12": {"shelf":"s0024","group":"magenta","item":"Z4","price":25,"quantity":5},
-        "x6y13": {"shelf":"s0025","group":"magenta","item":"Z5","price":26,"quantity":5}
+        "x6y46": {"shelf":"s0001","group":"red","item":"X1","price":2,"quantity":5},
+        "x7y46": {"shelf":"s0002","group":"red","item":"X2","price":3,"quantity":5},
+        "x8y46": {"shelf":"s0003","group":"red","item":"X3","price":4,"quantity":5},
+        "x9y46": {"shelf":"s0004","group":"red","item":"X4","price":5,"quantity":5},
+        "x10y46": {"shelf":"s0005","group":"red","item":"X5","price":6,"quantity":5},
+        "x28y43": {"shelf":"s0011","group":"green","item":"Y1","price":12,"quantity":5},
+        "x29y43": {"shelf":"s0012","group":"green","item":"Y2","price":13,"quantity":5},
+        "x30y43": {"shelf":"s0013","group":"green","item":"Y3","price":14,"quantity":5},
+        "x31y43": {"shelf":"s0014","group":"green","item":"Y4","price":15,"quantity":5},
+        "x32y43": {"shelf":"s0015","group":"green","item":"Y5","price":16,"quantity":5},
+        "x6y6": {"shelf":"s0021","group":"magenta","item":"Z1","price":22,"quantity":5},
+        "x6y7": {"shelf":"s0022","group":"magenta","item":"Z2","price":23,"quantity":5},
+        "x6y8": {"shelf":"s0023","group":"magenta","item":"Z3","price":24,"quantity":5},
+        "x6y9": {"shelf":"s0024","group":"magenta","item":"Z4","price":25,"quantity":5},
+        "x6y10": {"shelf":"s0025","group":"magenta","item":"Z5","price":26,"quantity":5}
     },
 
     "promotions":{
@@ -90,12 +87,12 @@
 
     "player":{
         "x":46,
-        "y":16
+        "y":13
     },
 
     "goal":{
         "x":46,
-        "y":25
+        "y":22
     },
 
     "theme":"default"
