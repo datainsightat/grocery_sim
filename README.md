@@ -17,7 +17,7 @@ Simulate the dynamics in a grocery store
 Get Dockerfile
 
     $ docker build -t grocery_sim .
-    $ docker container run -it -p 3000:3000 --shm-size=0.45gb --name grocery_sim grocery_sim
+    $ docker container run -it -p 8080:80 --shm-size=0.45gb --name grocery_sim grocery_sim
 
 ### Setup Docker container
 
