@@ -21,11 +21,15 @@ Get Dockerfile
 
 ### Setup Docker container
 
+#### If Repo is private use these steps to get an ssh key
+
     grocery_sim$ conda activate grocery_sim
     grocery_sim$ ssh-keygen -t ed25519 -C "your_email@example.com"
     grocery_sim$ cat /root/.ssh/id_ed25519.pub
 
 copy ssh key to dockerhub
+
+#### Then, proceed here
 
     grocery_sim$ git clone git@github.com:datainsightat/grocery_sim.git
     grocery_sim$ cd grocery_sim
